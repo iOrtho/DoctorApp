@@ -1,0 +1,6 @@
+{
+	"name": "assets",
+	"dependencies": {
+		"react-native": "^0.53.0"
+	}
+}
