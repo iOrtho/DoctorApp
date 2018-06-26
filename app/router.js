@@ -8,7 +8,7 @@ import Chat from 'app/screens/Chat/';
 import Home from 'app/screens/Home/';
 import Medical from 'app/screens/Medical/';
 import Login from 'app/screens/Auth/Login/';
-import SettingsMenu from 'app/screens/SettingsMenu/';
+import Settings from 'app/screens/SettingsMenu/';
 import SignUp from 'app/screens/Auth/SignUp/';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styling from 'app/config/styling';
@@ -16,9 +16,8 @@ import styling from 'app/config/styling';
 const AppTabs = createBottomTabNavigator(
 	{
 		Home,
-		Medical,
 		Chat,
-		SettingsMenu,
+		Settings,
 	},
 	{
 		navigationOptions: ({navigation}) => ({
@@ -35,7 +34,7 @@ const AppTabs = createBottomTabNavigator(
         				iconName = 'thermometer-half';
         				break;
 
-        			case 'SettingsMenu':
+        			case 'Settings':
         				iconName = 'cog';
         				break;
 
