@@ -31,7 +31,7 @@ export default class App extends React.Component {
 
             }else {
                 store.dispatch(UserAction.resetUserModel());
-                store.dispatch(UserAction.setUserModel({authIsChecked: true}));
+                store.dispatch(UserAction.setAuthChecked());
             }
 
         });
