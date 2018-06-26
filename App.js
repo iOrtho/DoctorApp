@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { Provider } from 'react-redux';
 import UserAction from 'app/store/actions/user';
+import OfficeAction from 'app/store/actions/office';
 import store from 'app/store/store';
 import Router from 'app/router';
 import { auth, database } from 'app/config/firebase';
@@ -14,6 +15,7 @@ export default class App extends React.Component {
     componentDidMount() {
         const Users = database.collection('Users');
         const {authIsChecked} = store.getState().user;
+        this.loadOfficeDetails();
 
         auth().onAuthStateChanged((user) => {
             if(user) {
@@ -34,6 +36,19 @@ export default class App extends React.Component {
                 store.dispatch(UserAction.setAuthChecked());
             }
 
+        });
+    }
+
+    /**
+     * Set a listener on the office model and sync it to the store
+     * @return {Void} 
+     */
+    loadOfficeDetails() {
+        const {id} = store.getState().office;
+        const Offices = database.collection('Offices');
+
+        Offices.doc(id).onSnapshot(doc => {
+            store.dispatch(OfficeAction.setOfficeModel({...doc.data()}));
         });
     }
 
