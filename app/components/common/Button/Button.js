@@ -7,7 +7,7 @@ import style from './style';
 const Button = ({loading, text, children, style: customStyle, ...others}) => {
 	
 	return (
-		<NativeButton {...others} style={[style.button, ...customStyle]}>
+		<NativeButton {...others} disabled={loading} style={[style.button, ...customStyle]}>
 			{(!loading && text) && <Text style={[style.text]}>{text}</Text>}
 			{(!loading && children) && <div>{children}</div>}
 			{loading &&  <Spinner style={[style.spinner]} color="#fff" />}
