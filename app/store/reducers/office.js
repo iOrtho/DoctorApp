@@ -12,6 +12,5 @@ export default function office(state = initialState, action) {
 
 		default:
 			return state;
-
 	}
 }
