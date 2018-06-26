@@ -41,7 +41,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Home);
 
 /**
  * Map the redux store's state to the component's props
- * @param  {Number} options.user The user model
+ * @param  {Object} options.user The user model
  * @return {Object}                  
  */
 function mapStateToProps({user}) {
