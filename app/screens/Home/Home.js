@@ -29,8 +29,7 @@ class Home extends Component {
 	 * @return {ReactElement} 
 	 */
 	render() {
-		const {users} = this.state;
-		const {id} = this.props;
+		const {office} = this.props;
 
 		return (
 			<ScreenWrapper>
@@ -60,7 +59,6 @@ function mapStateToProps({office}) {
  */
 function mapDispatchToProps(dispatch) {
 	return {
-		setUserId: (id) => dispatch(UserAction.setUserId(id)),
 		setUserModel: (data) => dispatch(UserAction.setUserModel(data)),
 	};
 }
