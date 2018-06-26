@@ -22,7 +22,7 @@ Permissions: {
 - Create `OnlineReviewObserver` component
 - Design database schema for info concerning the doctor
 - Add a `Doctors` key to the `Office` model like so:
-```
+```js
 Doctors: [
 	{
 		id: String,
@@ -38,7 +38,7 @@ Doctors: [
 ]
 ```
 - Add the `ReviewPlatform` key to the `Office` model to store info about the platforms holding the reviews
-```
+```js
 ReviewPlatform: {
 	facebook: {
 		pageId: String,
@@ -63,9 +63,9 @@ ReviewPlatform: {
 
 ### Sign Up
 - Make the Sign up process multi-step:
-	1st screen: fill out profile details (name, address, etc..)
-	2nd screen: confirm phone number via code
-	3rd screen: create email + password auth account
+	* 1st screen: fill out profile details (name, address, etc..)
+	* 2nd screen: confirm phone number via code
+	* 3rd screen: create email + password auth account
 
 ### Forgot Password
 - Create a screen to send a reset link via email
@@ -85,7 +85,7 @@ Connect to the questionnaire API.
 How? 
 - Create `Documents` branch within the User model for insurance & DL
 
-`
+```js
 Documents: {
 	insurance: {
 		photo: String,
@@ -94,20 +94,25 @@ Documents: {
 		photo: String,
 	},
 }
-`
+```
 
--Connect firebase.storage() to the app and use the File API to upload pictures to the storage. Save the images under 
-	-`/customers/images/insurance/userid-timestamp.png`
-	-`/customers/images/id/userid-timestamp.png` 
-	-`/customers/images/profile_photos/userid-timestamp.png`
+-Connect firebase.storage() to the app and use the File API to upload pictures to the storage. Save the images under:
+
+	- `/customers/images/insurance/userid-timestamp.png`
+
+	- `/customers/images/id/userid-timestamp.png`
+
+	- `/customers/images/profile_photos/userid-timestamp.png`
 
 Then save the referrences to the images in the `User` model.
 
 ### Customer should be able to send pics & videos via chat
 How?
 - Use the File API to upload the documents under
-	-`/chat/officeid/images/userid-timestamp.png`
-	-`/chat/officeid/videos/userid-timestamp.mp4`
+
+	- `/chat/officeid/images/userid-timestamp.png`
+
+	- `/chat/officeid/videos/userid-timestamp.mp4`
 
 -Save a referrence to the file in the `content` key of the `Message.body`.
 -Depending on the `Message.body.type` then the rendering of the `content` should be handled differently.
