@@ -23,7 +23,7 @@ class QuickHelp extends Component {
 		return {
 			buttons: [
 				{icon: 'phone', title: 'Call', onPress: null},
-				{icon: 'map-marker', title: 'Directions', onPress: null},
+				{icon: 'map-marker', title: 'Directions', onPress: null, iconSize: 26},
 				{icon: 'share', title: 'Share', onPress: null},
 			]
 		};
@@ -38,11 +38,11 @@ class QuickHelp extends Component {
 
 		return (
 			<View style={[style.container]}>
-				{buttons.map(({icon, title, onPress}, i) => {
+				{buttons.map(({icon, title, onPress, iconSize}, i) => {
 					return (
 						<View key={i} style={[style.buttonWrapper]}>
 							<Button style={[style.button]} onPress={onPress} bordered transparent>
-								<Icon name={icon} color={styling.color.main} size={25} />
+								<Icon name={icon} color={styling.color.main} size={iconSize || 23} />
 							</Button>
 							<Text style={[style.buttonTitle]}>{title.toUpperCase()}</Text>
 						</View>
