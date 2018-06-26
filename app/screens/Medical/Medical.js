@@ -29,9 +29,6 @@ class Home extends Component {
 	 * @return {ReactElement} 
 	 */
 	render() {
-		const {users} = this.state;
-		const {id} = this.props;
-
 		return (
 			<ScreenWrapper>
 				<Text>This is the medical screen!</Text>
@@ -44,12 +41,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(Home);
 
 /**
  * Map the redux store's state to the component's props
- * @param  {Number} options.user.id The ID of the user
+ * @param  {Number} options.user The user model
  * @return {Object}                  
  */
-function mapStateToProps({user: {id}}) {
+function mapStateToProps({user}) {
 	return {
-		id,
+		user,
 	};
 }
 
@@ -60,7 +57,6 @@ function mapStateToProps({user: {id}}) {
  */
 function mapDispatchToProps(dispatch) {
 	return {
-		setUserId: (id) => dispatch(UserAction.setUserId(id)),
 		setUserModel: (data) => dispatch(UserAction.setUserModel(data)),
 	};
 }

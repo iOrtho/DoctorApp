@@ -165,7 +165,6 @@ export default connect(null, mapDispatchToProps)(SignUp);
  */
 function mapDispatchToProps(dispatch) {
 	return {
-		setUserId: (id) => dispatch(UserAction.setUserId(id)),
 		setUserModel: (data) => dispatch(UserAction.setUserModel(data)),
 	};
 }

@@ -8,18 +8,6 @@ export default class User {
 	static SET_AUTH_CHECKED = 'SET_AUTH_CHECKED';
 	
 	/**
-	 * Return the action to set the user ID
-	 * @param {Number} id The user ID
-	 * @return {Object} 
-	 */
-	static setUserId(id) {
-		return {
-			type: this.SET_USER_ID,
-			id,
-		};
-	}
-
-	/**
 	 * Return the action to update a user's data
 	 * @param {Object} data The user model
 	 * @return {Object} 
