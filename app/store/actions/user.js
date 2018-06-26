@@ -4,6 +4,7 @@ export default class User {
 
 	static SET_USER_ID = 'SET_USER_ID';
 	static SET_USER_MODEL = 'SET_USER_MODEL';
+	static RESET_USER_MODEL = 'RESET_USER_MODEL';
 	
 	/**
 	 * Return the action to set the user ID
@@ -26,6 +27,17 @@ export default class User {
 		return {
 			type: this.SET_USER_MODEL,
 			data,
+		};
+	}
+
+	/**
+	 * Return the action to reset the user model on logout
+	 * @param {Object} data The user model
+	 * @return {Object} 
+	 */
+	static resetUserModel() {
+		return {
+			type: this.RESET_USER_MODEL,
 		};
 	}
 }

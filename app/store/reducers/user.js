@@ -14,6 +14,9 @@ export default function user(state = initialState, action) {
 		case UsersAction.SET_USER_MODEL:
 			return { ...state, ...action.data };
 
+		case UsersAction.RESET_USER_MODEL:
+			return initialState;
+
 		default:
 			return state;
 	}
