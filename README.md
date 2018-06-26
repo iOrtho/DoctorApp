@@ -6,7 +6,7 @@
 - Send notifications to customers and to agents (online) whenever a new message is received
 - Send an email if a customer doesn't have notif turned on or if no agents are online 
 - Add `Permissions` key to `Users` model like so:
-```
+```js
 Permissions: {
 	notifications: Boolean,
 	location: Boolean,
@@ -47,7 +47,7 @@ ReviewPlatform: {
 		rewiew_count: Number,
 		last_updated: Date,
 	},
-	....
+	...
 }
 ```
 - Create API keys for "Google My Business", "Yelp', and "Facebook App" in order to be able to fetch reviews
