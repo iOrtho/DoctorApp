@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
-import ScreenWrapper from 'app/components/common/ScreenWrapper/';
+import { ScrollView, View, Image, Text, ActivityIndicator } from 'react-native';
+import Swiper from 'react-native-swiper';
+import ScreenWrapper from 'app/components/common/ScreenWrapper';
+import ScreenLoading from 'app/components/common/ScreenLoading';
+import QuickHelp from 'app/components/Home/QuickHelp';
+import Slide from 'app/components/Slide';
 import { connect } from 'react-redux';
 import UserAction from 'app/store/actions/user';
 import style from './style';
@@ -12,6 +16,8 @@ class Home extends Component {
 		super(props);
 
 		this.state = this.getInitialState();
+
+		this.handleImageLoaded = this.handleImageLoaded.bind(this);
 	}
 
 	/**
@@ -20,8 +26,25 @@ class Home extends Component {
 	 */
 	getInitialState() {
 		return {
-
+			data: [
+				{ url: 'https://i.imgur.com/MtjAPCJ.png' },
+				{ url: 'https://i.imgur.com/VHE366s.png' },
+				{ url: 'https://i.imgur.com/jHyN5vz.png' },
+			],
+			loadQueue: []
 		};
+	}
+
+	/**
+	 * Update the loaded status of the image with the given index
+	 * @param  {Number} i The index of the image
+	 * @return {Void}   
+	 */
+	handleImageLoaded(i) {
+		const queue = [...this.state.loadQueue];
+		queue[i] = true;
+
+		this.setState({loadQueue: queue});
 	}
 
 	/**
@@ -30,11 +53,55 @@ class Home extends Component {
 	 */
 	render() {
 		const {office} = this.props;
+		const {data, loadQueue} = this.state;
+
+		if(!office.id) {
+			return <ScreenLoading />;
+		}
 
 		return (
-			<ScreenWrapper>
-				<Text>This is the home screen!</Text>
-			</ScreenWrapper>
+			<ScrollView contentContainerStyle={{display: 'flex',height: '200%'}}>
+
+				<View style={{flex: 1}}>
+					<Swiper>
+						{data.map(({url, ready}, i) => {
+							return (
+								<Slide
+									key={i}
+									index={i}
+									uri={url}
+									loaded={!!loadQueue[i]}
+									onLoad={this.handleImageLoaded} 
+								/>
+							);
+						})}
+					</Swiper>
+				</View>
+
+				<ScreenWrapper style={[{flex: 4, paddingTop: 0}]}>
+					<Text style={[style.title]}>{office.name}</Text>
+
+					<QuickHelp />
+
+					<View style={{flex: 2, backgroundColor: 'lime'}}>
+						<Text>Review container</Text>
+					</View>
+
+					<View style={{flex: 3, backgroundColor: 'green'}}>
+						<Text>"Office Description/Bio"</Text>
+					</View>
+
+					<Text style={[style.title]}>About the Doctor</Text>
+
+					<View style={{flex: 3, backgroundColor: 'turquoise'}}>
+						<Text>Picture of Doctor?</Text>
+					</View>
+
+					<View style={{flex: 3, backgroundColor: 'lightblue'}}>
+						<Text>Bio of Doctor</Text>
+					</View>
+				</ScreenWrapper>
+			</ScrollView>
 		);
 	}
 }
