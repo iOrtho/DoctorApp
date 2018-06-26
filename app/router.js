@@ -6,6 +6,7 @@ import {
  	createStackNavigator } from 'react-navigation';
 import Chat from 'app/screens/Chat/';
 import Home from 'app/screens/Home/';
+import Medical from 'app/screens/Medical/';
 import Login from 'app/screens/Auth/Login/';
 import SettingsMenu from 'app/screens/SettingsMenu/';
 import SignUp from 'app/screens/Auth/SignUp/';
@@ -14,6 +15,8 @@ import styling from 'app/config/styling';
 
 const AppTabs = createBottomTabNavigator(
 	{
+		Home,
+		Medical,
 		Chat,
 		SettingsMenu,
 	},
@@ -26,6 +29,10 @@ const AppTabs = createBottomTabNavigator(
         		switch(routeName) {
         			case 'Chat':
         				iconName = 'user';
+        				break;
+
+        			case 'Medical':
+        				iconName = 'thermometer-half';
         				break;
 
         			case 'SettingsMenu':
