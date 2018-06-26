@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-import { Button, Spinner } from 'native-base';
 import { connect } from 'react-redux';
 import UserAction from 'app/store/actions/user';
 import ScreenWrapper from 'app/components/common/ScreenWrapper/';
+import Button from 'app/components/common/Button/';
 import firebase, { database } from 'app/config/firebase';
 import style from './style';
 
@@ -26,6 +26,26 @@ class Login extends Component {
 		return {
 			isSubmitting: false,
 		};
+	}
+
+	/**
+	 * Redirect the user to the app if already authenticated
+	 */
+	componentDidMount() {
+		const {id, authIsChecked} = this.props.user;
+		if(authIsChecked && id) {
+			this.props.navigation.navigate('App');
+		}
+	}
+
+	/**
+	 * Redirect the user to the app if already authenticated
+	 */
+	componentDidUpdate() {
+		const {id, authIsChecked} = this.props.user;
+		if(authIsChecked && id) {
+			this.props.navigation.navigate('App');
+		}
 	}
 
 	/**
@@ -62,17 +82,18 @@ class Login extends Component {
 	render() {
 		const uid = 'KHHNbjR2iooYQJpHyfSq';
 		const {isSubmitting} = this.state;
+		const {authIsChecked} = this.props.user;
 
 		return (
 			<ScreenWrapper>
 				<View style={{marginTop: 50,display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+					
 					<Button
-						key={uid}
-						style={style.button}
+						style={[style.button]}
 						onPress={() => this.onSignIn(uid)}
+						loading={!authIsChecked}
+						text="Sign in as a customer!"
 					>
-						{!isSubmitting && <Text>Sign In as a customer!</Text>}
-						{isSubmitting && <Spinner color="#fff" />}
 					</Button>
 				</View>
 			</ScreenWrapper>
@@ -80,7 +101,18 @@ class Login extends Component {
 	}
 }
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
+/**
+ * Map the redux store's state to the component's props
+ * @param  {Object} state.user The user's account model
+ * @return {Object}                  
+ */
+function mapStateToProps({user}) {
+	return {
+		user,
+	};
+}
 
 /**
  * Map the store's action dispatcher to the component's props
