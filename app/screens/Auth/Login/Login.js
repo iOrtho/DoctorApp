@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
+import { Form, Item, Input, Label } from 'native-base';
 import UserAction from 'app/store/actions/user';
 import ScreenWrapper from 'app/components/common/ScreenWrapper/';
 import Button from 'app/components/common/Button/';
-import firebase, { database } from 'app/config/firebase';
+import { auth } from 'app/config/firebase';
 import style from './style';
 
 class Login extends Component {
@@ -15,7 +16,7 @@ class Login extends Component {
 
 		this.state = this.getInitialState();
 
-		this.onSignIn = this.onSignIn.bind(this);
+		this.handleSignIn = this.handleSignIn.bind(this);
 	}
 
 	/**
@@ -24,6 +25,8 @@ class Login extends Component {
 	 */
 	getInitialState() {
 		return {
+			email: '',
+			password: '',
 			isSubmitting: false,
 		};
 	}
@@ -49,29 +52,16 @@ class Login extends Component {
 	}
 
 	/**
-	 * Perform a request to authenticate a user anonymously
-	 * @param  {Number} userId The user ID of the customer
-	 * @return {Void}        
+	 * Attempt to authenticate the user
+	 * @return {Void} 
 	 */
-	onSignIn(userId) {
-		const {navigation: authNav} = this.props;
-		const Users = database.collection('Users');
-
+	handleSignIn() {
+		const {email, password} = this.state;
 		this.setState({isSubmitting: true});
-		
-		Users.doc(userId).get().then(doc => {
-			this.setState({isSubmitting: false});
 
-			if(doc.exists) {
-				this.props.setUserModel({...doc.data(), id: userId});
-				authNav.navigate('App');
-				return;
-			}
-
-			alert('A user with this ID could NOT be found!');
-		}).catch(err => {
-			console.log(err);
+		auth().signInWithEmailAndPassword(email, password).catch(({message}) => {
 			this.setState({isSubmitting: false});
+			alert(message);
 		});
 	}
 
@@ -80,22 +70,40 @@ class Login extends Component {
 	 * @return {ReactElement} 
 	 */
 	render() {
-		const uid = 'KHHNbjR2iooYQJpHyfSq';
-		const {isSubmitting} = this.state;
+		const {isSubmitting, email, password} = this.state;
 		const {authIsChecked} = this.props.user;
 
 		return (
 			<ScreenWrapper>
-				<View style={{marginTop: 50,display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
-					
+				<Form>
+					<Text>Sign into your account</Text>
+					<Item floatingLabel>
+						<Label>Email</Label>
+						<Input
+							autoCapitalize="none"
+							autoCorrect={false}
+							value={email}
+							onChangeText={(email) => this.setState({email})}
+						/>
+					</Item>
+
+					<Item floatingLabel>
+						<Label>Password</Label>
+						<Input
+							autoCapitalize="none"
+							autoCorrect={false}
+							secureTextEntry={true}
+							value={password}
+							onChangeText={(password) => this.setState({password})}
+						/>
+					</Item>
+
 					<Button
-						style={[style.button]}
-						onPress={() => this.onSignIn(uid)}
-						loading={!authIsChecked}
-						text="Sign in as a customer!"
-					>
-					</Button>
-				</View>
+						onPress={this.handleSignIn}
+						loading={isSubmitting}
+						text="Sign In"
+					/>
+				</Form>
 			</ScreenWrapper>
 		);
 	}
