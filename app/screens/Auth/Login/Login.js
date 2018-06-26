@@ -100,7 +100,7 @@ class Login extends Component {
 
 					<Button
 						onPress={this.handleSignIn}
-						loading={isSubmitting}
+						loading={isSubmitting || !authIsChecked}
 						text="Sign In"
 					/>
 				</Form>
