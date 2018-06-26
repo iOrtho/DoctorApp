@@ -13,6 +13,7 @@ export default class App extends React.Component {
      */
     componentDidMount() {
         const Users = database.collection('Users');
+        const {authIsChecked} = store.getState().user;
 
         auth().onAuthStateChanged((user) => {
             if(user) {
@@ -21,6 +22,7 @@ export default class App extends React.Component {
                         const data = {
                             id: change.doc.id,
                             ...change.doc.data(),
+                            authIsChecked: true,
                         };
 
                         store.dispatch(UserAction.setUserModel(data));
@@ -29,7 +31,9 @@ export default class App extends React.Component {
 
             }else {
                 store.dispatch(UserAction.resetUserModel());
+                store.dispatch(UserAction.setUserModel({authIsChecked: true}));
             }
+
         });
     }
 
