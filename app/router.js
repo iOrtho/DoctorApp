@@ -7,12 +7,15 @@ import {
 import Chat from 'app/screens/Chat/';
 import Home from 'app/screens/Home/';
 import Login from 'app/screens/Auth/Login/';
+import SettingsMenu from 'app/screens/SettingsMenu/';
+import SignUp from 'app/screens/Auth/SignUp/';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styling from 'app/config/styling';
 
 const AppTabs = createBottomTabNavigator(
 	{
 		Chat,
+		SettingsMenu,
 	},
 	{
 		navigationOptions: ({navigation}) => ({
@@ -23,6 +26,10 @@ const AppTabs = createBottomTabNavigator(
         		switch(routeName) {
         			case 'Chat':
         				iconName = 'user';
+        				break;
+
+        			case 'SettingsMenu':
+        				iconName = 'cog';
         				break;
 
         			default:
@@ -63,6 +70,7 @@ const AppTabs = createBottomTabNavigator(
 
 const AuthStack = createStackNavigator({
 	Login,
+	SignUp,
 });
 
 const AppNavigator = createSwitchNavigator(
