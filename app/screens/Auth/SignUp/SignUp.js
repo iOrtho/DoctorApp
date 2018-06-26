@@ -8,8 +8,6 @@ import ScreenWrapper from 'app/components/common/ScreenWrapper/';
 import Button from 'app/components/common/Button/';
 import style from './style';
 
-const officeId = 'HfOnKBLWjp3lwT8K6aGe';
-
 class SignUp extends Component {
 
 	/** The component's constructor */
@@ -73,6 +71,7 @@ class SignUp extends Component {
 	createUserAccount() {
 		const Users = database.collection('Users');
 		const {email, password} = this.state;
+		const {id, name} = this.props.office;
 
 		firebase.auth().createUserWithEmailAndPassword(email, password)
 		.catch(({message}) => {
@@ -92,10 +91,7 @@ class SignUp extends Component {
 					name: '',
 					photo: '',
 					phone_number: '',
-					Office: {
-						id: officeId,
-						name: '',
-					},
+					Office: { id, name },
 					created_at: new Date(),
 					updated_at: new Date(),
 				};
@@ -156,7 +152,18 @@ class SignUp extends Component {
 	}
 }
 
-export default connect(null, mapDispatchToProps)(SignUp);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+
+/**
+ * Map the redux store's state to the component's props
+ * @param  {Object} options.office The office model
+ * @return {Object}                  
+ */
+function mapStateToProps({office}) {
+	return {
+		office,
+	};
+}
 
 /**
  * Map the store's action dispatcher to the component's props
