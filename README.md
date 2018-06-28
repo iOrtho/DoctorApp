@@ -3,6 +3,8 @@
 ### Chat
 - Limit the max-length of a text message in the chat to 1600
 - Clear the input when a message is sent
+- Create `ChatDayLimit` component for Chat screens
+- Display `timestamps` on the messages
 - Send notifications to customers and to agents (online) whenever a new message is received
 - Send an email if a customer doesn't have notif turned on or if no agents are online 
 - Add `Permissions` key to `Users` model like so:
@@ -12,8 +14,6 @@ Permissions: {
 	location: Boolean,
 }
 ```
-- Create screens for
-	* office overview (Addresses, operating hours, reviews)
 
 ### Home
 - Implement modals in the `QuickHelp` component
@@ -73,9 +73,20 @@ ReviewPlatform: {
 ### General
 - Add validation to the various forms on the app
 - Add a `middlename` key to `Agent` and `User` model
+- Design email sending system
+How?
+    - Create endpoints on the Firebase API to trigger the sending of certain emails like `message_notifications`
+
+
 
 # List of Future Features
 
+
+### Agents should be able to mark a conversation as `solved`
+### The conversations should be automatically marked as ended after 10min of inactivity from the customer
+### Agents should only seen active conversations from the Dashboard
+### Messages should have functioning read receipt with the time seen
+### The `Chat` screen should have placeholder content to let the customer know they're about to start a new conversation with employees of the office
 ### Add a `TransitionScreen` to be shown when user goes from `App` to `Auth`
 ### Customer should be able to fill their questionnaire and have that data sent to the 3rd party
 Pre-requisite:
