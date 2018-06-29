@@ -16,8 +16,22 @@ Permissions: {
 ```
 
 ### Home
-- Implement modals in the `QuickHelp` component
 - Create `OperatingHours` component
+How?
+Add to the model:
+```
+Hours: {
+	monday: {
+		open: '7:00am cst',
+		close: '7:00am cst',
+	},
+	holidays: {
+		christmas: {
+			...
+		}
+	}
+}
+```
 - Update the web app to support the updating of all the new fields
 - Create `OnlineReviewObserver` component
 - Design database schema for info concerning the doctor
