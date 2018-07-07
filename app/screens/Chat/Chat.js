@@ -138,6 +138,7 @@ class Chat extends Component {
 						<Input
 							placeholder="Enter your message"
 							onChangeText={(input) => this.setState({input})}
+							maxLength={1600}
 							style={{flex: 1}}
 						/>
 					</Item>
