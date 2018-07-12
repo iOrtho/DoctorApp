@@ -48,7 +48,10 @@ export default class App extends React.Component {
         const Offices = database.collection('Offices');
 
         Offices.doc(id).onSnapshot(doc => {
-            store.dispatch(OfficeAction.setOfficeModel({...doc.data()}));
+            store.dispatch(OfficeAction.setOfficeModel({
+                ...doc.data(),
+                ready:true,
+            }));
         });
     }
 

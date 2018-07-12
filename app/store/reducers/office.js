@@ -2,6 +2,7 @@ import OfficeAction from '../actions/office';
 
 const initialState = {
 	id: 'HfOnKBLWjp3lwT8K6aGe',
+	ready: false,
 };
 
 export default function office(state = initialState, action) {
