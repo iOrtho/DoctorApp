@@ -82,7 +82,7 @@ class Home extends Component {
 				<ScreenWrapper style={[{paddingTop: 0}]}>
 					<Text style={[style.title]}>{office.name}</Text>
 
-					<QuickHelp style={[{marginBottom: 15}]} />
+					<QuickHelp office={office} style={[{marginBottom: 15}]} />
 
 					{office.ready && <OperatingHours hours={office.operating_hours} />}
 

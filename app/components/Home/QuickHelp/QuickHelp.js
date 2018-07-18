@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { ScrollView, View, Text } from 'react-native';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Button, ActionSheet } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AppButton from 'app/components/common/Button';
@@ -72,6 +71,7 @@ class QuickHelp extends Component {
 }
 
 QuickHelp.propTypes = {
+	office: PropTypes.object.isRequired,
 	style: PropTypes.array,
 };
 
@@ -79,15 +79,4 @@ QuickHelp.defaultProps = {
 	style: [],
 };
 
-export default connect(mapStateToProps, null)(QuickHelp);
-
-/**
- * Map the redux store's state to the component's props
- * @param  {Object} options.office The office model
- * @return {Object}                  
- */
-function mapStateToProps({office}) {
-	return {
-		office,
-	};
-}
+export default QuickHelp;
