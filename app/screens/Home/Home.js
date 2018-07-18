@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Image, Text, ActivityIndicator } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 import Swiper from 'react-native-swiper';
 import ScreenWrapper from 'app/components/common/ScreenWrapper';
 import ScreenLoading from 'app/components/common/ScreenLoading';
