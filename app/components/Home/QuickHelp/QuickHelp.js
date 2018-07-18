@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text } from 'react-native';
+import { ScrollView, View, Text, Platform, Linking, Alert, Clipboard } from 'react-native';
 import PropTypes from 'prop-types';
 import { Button, ActionSheet } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -15,7 +15,7 @@ class QuickHelp extends Component {
 
 		this.state = this.getInitialState();
 
-		this.renderMapModal = this.renderMapModal.bind(this);
+		this.openMapMenu = this.openMapMenu.bind(this);
 	}
 
 	/**
@@ -26,20 +26,46 @@ class QuickHelp extends Component {
 		return {
 			buttons: [
 				{icon: 'phone', title: 'Call', onPress: null},
-				{icon: 'map-marker', title: 'Directions', onPress: null, iconSize: 26},
+				{icon: 'map-marker', title: 'Directions', onPress: () => this.openMapMenu(), iconSize: 26},
 				{icon: 'share', title: 'Share', onPress: null},
 			],
-			mapModal: true,
 		};
 	}
 
+	/**
+	 * Display the menu of different options for the directions
+	 * @return {Void} 
+	 */
 	openMapMenu() {
-		const {} = this.props.office;
+		const {address, city} = this.props.office.locations[0];
+		const actions = ['open', 'copy', 'cancel'];
+		const fullAddress = `${address}, ${city}`;
 
 		ActionSheet.show({
 			options: ['Open in Maps', 'Copy Address', 'Cancel'],
 			cancelButtonIndex: 2,
-		})
+			title: fullAddress,
+		}, (index) => {
+			this.handleMapAction(actions[index], index == 0 ? fullAddress : null);
+		});
+	}
+
+	/**
+	 * Handle the action to perform based on the choice in the map menu
+	 * @param  {String} action The ID of the selected option
+	 * @param  {String} target The target address
+	 * @return {Void}        
+	 */
+	handleMapAction(action, target) {
+		if(action == 'open') {
+			(Platform.select({
+				ios: () => Linking.openURL(`maps://app?daddr=${target}`),
+				android: () => {},
+			}))();
+		}else if(action == 'copy') {
+			Clipboard.setString(target);
+			Alert.alert('Success','The address was copied to the clipboard!');
+		}
 	}
 
 	/**
@@ -64,7 +90,6 @@ class QuickHelp extends Component {
 						);
 					})}
 				</View>
-				{this.renderMapModal()}
 			</View>
 		);
 	}
