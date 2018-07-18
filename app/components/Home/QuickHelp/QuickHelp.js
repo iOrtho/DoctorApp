@@ -60,7 +60,7 @@ class QuickHelp extends Component {
 		if(action == 'open') {
 			(Platform.select({
 				ios: () => Linking.openURL(`maps://app?daddr=${target}`),
-				android: () => {},
+				android: () => Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${target}`),
 			}))();
 		}else if(action == 'copy') {
 			Clipboard.setString(target);
