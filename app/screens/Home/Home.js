@@ -61,9 +61,9 @@ class Home extends Component {
 		}
 
 		return (
-			<ScrollView contentContainerStyle={{display: 'flex',height: '200%'}}>
+			<ScrollView contentContainerStyle={{display: 'flex'}}>
 
-				<View style={{flex: 1}}>
+				<View style={{height: 250}}>
 					<Swiper>
 						{data.map(({url, ready}, i) => {
 							return (
@@ -79,10 +79,10 @@ class Home extends Component {
 					</Swiper>
 				</View>
 
-				<ScreenWrapper style={[{flex: 4, paddingTop: 0}]}>
+				<ScreenWrapper style={[{paddingTop: 0}]}>
 					<Text style={[style.title]}>{office.name}</Text>
 
-					<QuickHelp />
+					<QuickHelp style={[{marginBottom: 15}]} />
 
 					{office.ready && <OperatingHours hours={office.operating_hours} />}
 
