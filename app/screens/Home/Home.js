@@ -4,6 +4,7 @@ import Swiper from 'react-native-swiper';
 import ScreenWrapper from 'app/components/common/ScreenWrapper';
 import ScreenLoading from 'app/components/common/ScreenLoading';
 import QuickHelp from 'app/components/Home/QuickHelp';
+import OperatingHours from 'app/components/Home/OperatingHours';
 import Slide from 'app/components/Slide';
 import { connect } from 'react-redux';
 import UserAction from 'app/store/actions/user';
@@ -82,6 +83,8 @@ class Home extends Component {
 					<Text style={[style.title]}>{office.name}</Text>
 
 					<QuickHelp />
+
+					{office.ready && <OperatingHours hours={office.operating_hours} />}
 
 					<View style={{flex: 2, backgroundColor: 'lime'}}>
 						<Text>Review container</Text>
