@@ -86,21 +86,21 @@ class Home extends Component {
 
 					{office.ready && <OperatingHours hours={office.operating_hours} />}
 
-					<View style={{flex: 2, backgroundColor: 'lime'}}>
+					<View style={{height: 200, backgroundColor: 'lime'}}>
 						<Text>Review container</Text>
 					</View>
 
-					<View style={{flex: 3, backgroundColor: 'green'}}>
+					<View style={{height: 200, backgroundColor: 'green'}}>
 						<Text>"Office Description/Bio"</Text>
 					</View>
 
 					<Text style={[style.title]}>About the Doctor</Text>
 
-					<View style={{flex: 3, backgroundColor: 'turquoise'}}>
+					<View style={{height: 200, backgroundColor: 'turquoise'}}>
 						<Text>Picture of Doctor?</Text>
 					</View>
 
-					<View style={{flex: 3, backgroundColor: 'lightblue'}}>
+					<View style={{height: 200, backgroundColor: 'lightblue'}}>
 						<Text>Bio of Doctor</Text>
 					</View>
 				</ScreenWrapper>
