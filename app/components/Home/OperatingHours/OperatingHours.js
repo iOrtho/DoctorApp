@@ -13,6 +13,8 @@ class OperatingHours extends Component {
 
         this.state = this.getInitialState();
 
+        this.evaluateCurrentStatus = this.evaluateCurrentStatus.bind(this);
+        this.renderTableRow = this.renderTableRow.bind(this);
         this.renderWeeklySchedule = this.renderWeeklySchedule.bind(this);
     }
 
@@ -25,71 +27,101 @@ class OperatingHours extends Component {
             today: moment(),
             currentStatus: 'Closing Soon at 10PM',
             showWeekly: false,
-            week: [],
+            schedule: null,
+            currentWeekday: '',
+            weekdays: [
+                'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday',
+            ],
         };
     }
 
     componentDidMount() {
-        const week = [
-            {
-                title: 'Opening Soon',
-                content: this.renderWeeklySchedule()
-            },
-        ];
+        const currentWeekday = this.state.weekdays[moment().isoWeekday()-1];
+        this.evaluateCurrentStatus(currentWeekday);
+        this.setState({currentWeekday});
 
-        this.setState({week});
+        // Delay the rendering of the schedule for highlighting day
+        setTimeout(() => this.setState({schedule: this.renderWeeklySchedule()}), 100);
     }
 
+    /**
+     * Figure out the first hint to show about the operating hours
+     * @param  {String} currentWeekday The current week day
+     * @return {Void}                
+     */
+    evaluateCurrentStatus(currentWeekday) {
+        const {hours} = this.props;
+        const today = moment().year(2000).month(0).date(1);
+        const closing = moment(hours[currentWeekday].close_date.seconds * 1000);
+        const opening = moment(hours[currentWeekday].open_date.seconds * 1000);
+        const closeValue = closing.diff(today,'hours', true);
+        const openValue = today.diff(opening,'hours', true);
+        this.setState({currentWeekday});
+
+        let currentStatus = '';
+        if(closeValue < 0) {
+            const nextOpenDay = () => {
+                for (let i = 0; i < 7; i++) {     
+                    const iso = moment().isoWeekday();
+                    const tomorrow = this.state.weekdays[iso+i >= 7 ? 0+i : iso+i];
+                    if(hours[tomorrow]) return tomorrow;
+                }
+            };
+
+            currentStatus = `Opening ${nextOpenDay()} at ${hours[nextOpenDay()].open}`;
+        } else if(closeValue < 2) {
+            currentStatus = 'Closing Soon';
+        } else if (openValue < 0) {
+            currentStatus = `Opening at ${hours[currentWeekday].open}`;
+        }else {
+            currentStatus = `Closing at ${hours[currentWeekday].close}`;
+        }
+
+        this.setState({currentStatus});
+    }
+
+    /**
+     * Re-organize the format of the operating hours and render the time table
+     * @return {ReactElement} 
+     */
     renderWeeklySchedule() {
         const {hours} = this.props;
+        const {weekdays} = this.state;
         let weeklySchedule = [];
 
         Object.keys(hours).forEach(day => {
             if(day == 'holidays') return;
 
-            let weekIndex;
-            switch(day) {
-                case 'monday':
-                    weekIndex = 0;
-                    break;
-
-                case 'tuesday':
-                    weekIndex = 1;
-                    break;
-
-                case 'wednesday':
-                    weekIndex = 2;
-                    break;
-
-                case 'thursday':
-                    weekIndex = 3;
-                    break;
-
-                case 'friday':
-                    weekIndex = 4;
-                    break;
-
-                case 'saturday':
-                    weekIndex = 5;
-                    break;
-
-                case 'sunday':
-                    weekIndex = 6;
-                    break;
-            }
-
-            weeklySchedule[weekIndex] = hours[day] 
+            weeklySchedule[weekdays.indexOf(day)] = hours[day] 
                 ? { ...hours[day], day } 
                 : { day, open: false };
         });
 
         return (
-            <View>
-                {weeklySchedule.map(({day, open, close}, i) => {
-                    return (
-                        <Text key={i}>{day}: {open ? `${open} - ${close}` : 'Closed'}</Text>
-                    );
-                })}
+            <View style={style.content}>
+                {weeklySchedule.map(this.renderTableRow)}
+            </View>
+        );
+    }
+
+    /**
+     * Render the row of the time table
+     * @param  {Object} date   The day object of the operating hours
+     * @param  {Number} i             The index of the day in the week
+     * @return {ReactElement}               
+     */
+    renderTableRow({day, open, close}, i) {
+        const {currentWeekday} = this.state;
+        const boldText = currentWeekday == day ? style.bold : {};
+
+        return (
+            <View key={i} style={[style.tableRow, style.day]}>
+                <Text style={[style.dayCell, boldText]}>
+                    {day}
+                </Text>
+                <Text style={[style.timeCell, boldText]}>
+                    {open ? `${open} - ${close}` : 'Closed'}
+                </Text>
             </View>
         );
     }
@@ -100,14 +132,17 @@ class OperatingHours extends Component {
      */
     render() {
         const {hours, style: customStyle} = this.props;
-        const {currentStatus, week} = this.state;
+        const {currentStatus, schedule} = this.state;
+        const data = [
+            {
+                title: currentStatus,
+                content: schedule,
+            }
+        ];
 
         return (
-            <View style={[...customStyle]}>
-                <Accordion dataArray={week} expanded={true} />
-                <Text style={[style.text]}>{currentStatus}</Text>
-                {"\b"}
-                <Text style={[style.text]}>Opens Monday at 8AM</Text>
+            <View style={[style.dropdown, ...customStyle]}>
+                <Accordion dataArray={data} expanded={true} />
             </View>
         );
     }
