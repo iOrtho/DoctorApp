@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Button } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -35,9 +36,10 @@ class QuickHelp extends Component {
 	 */
 	render() {
 		const {buttons} = this.state;
+		const {style: customStyle} = this.props;
 
 		return (
-			<View style={[style.container]}>
+			<View style={[style.container, ...customStyle]}>
 				{buttons.map(({icon, title, onPress, iconSize}, i) => {
 					return (
 						<View key={i} style={[style.buttonWrapper]}>
@@ -52,6 +54,14 @@ class QuickHelp extends Component {
 		);
 	}
 }
+
+QuickHelp.propTypes = {
+	style: PropTypes.array,
+};
+
+QuickHelp.defaultProps = {
+	style: [],
+};
 
 export default connect(mapStateToProps, null)(QuickHelp);
 

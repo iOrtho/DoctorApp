@@ -22,7 +22,6 @@ export default StyleSheet.create({
 		textDecorationLine: 'underline',
 	},
 	container: {
-		flex: 3/2,
 		flexDirection: 'row',
 		justifyContent: 'space-around',
 		alignItems: 'center',
