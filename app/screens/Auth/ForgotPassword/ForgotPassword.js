@@ -26,7 +26,7 @@ class ForgotPassword extends Component {
 	 */
 	getInitialState() {
 		return {
-			stage: 1,
+			stage: 2,
 			password: '',
 			repeated: '',
 			isSubmitting: false,
@@ -39,7 +39,6 @@ class ForgotPassword extends Component {
 	 */
 	handleResetPassword() {
 		const {password, repeated} = this.state;
-		const {navigation} = this.props;
 
 		if(password.length < 6) {
 			alert('Your password must be at least 6 characters.');
@@ -53,8 +52,14 @@ class ForgotPassword extends Component {
 
 		this.setState({isSubmitting: true});
 		auth().currentUser.updatePassword(password)
-			.then(() => navigation.reset('Login'))
-			.catch(console.error);
+			.then(() => {
+				this.setState({isSubmitting: false});
+				this.props.navigation.reset('Login');
+			})
+			.catch(err => {
+				this.setState({isSubmitting: false});
+				console.error(err);
+			});
 	}
 
 	/**
@@ -62,18 +67,18 @@ class ForgotPassword extends Component {
 	 * @return {ReactElement} 
 	 */
 	render() {
-		const {stage, password, repeated, isSubmitting} = this.props;
+		const {stage, password, repeated, isSubmitting} = this.state;
 		const {office} = this.props;
-		
+		const title = stage == 1 ? 'Verify your number' : 'Update your password';
+
 		return (
 			<ScreenWrapper>
-				<Text style={[style.title]}>Verify your number</Text>
+					<Text style={[style.title]}>{title}</Text>
 					{stage == 1 && 
 						<PhoneNumberVerification
 							purpose="reset"
 							officeId={office.id}
 							onSuccess={() => this.setState({stage: 2})}
-							style={[{marginTop: 30}]}
 						/>}
 
 					{stage == 2 &&

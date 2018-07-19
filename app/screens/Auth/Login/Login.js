@@ -77,7 +77,7 @@ class Login extends Component {
 		return (
 			<ScreenWrapper style={[{height: '100%'}]}>
 				<Form>
-					<Text>Sign into your account</Text>
+					<Text style={[style.title]}>Sign into your account</Text>
 					<Item floatingLabel>
 						<Label>Email</Label>
 						<Input

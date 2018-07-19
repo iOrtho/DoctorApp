@@ -51,7 +51,6 @@ class SignUpStep2 extends Component {
 						purpose="signup"
 						officeId={office.id}
 						onSuccess={this.handleNumberWasVerified}
-						style={[{marginTop: 30}]}
 					/>
 			</ScreenWrapper>
 		);

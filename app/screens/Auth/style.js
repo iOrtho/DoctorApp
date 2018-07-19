@@ -7,6 +7,7 @@ export default StyleSheet.create({
 	title: {
 		textAlign: 'center',
 		fontSize: 25,
+		marginBottom: 40,
 	},
 	button: {
 		width: '100%',
