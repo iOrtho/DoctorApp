@@ -44,7 +44,6 @@ class PhoneNumberVerification extends Component {
 				if(i == 3 || i == 6) result.push('-');
 				result.push(char);
 			});
-			//console.log(result)
 			return result.join('');
 		}
 		return number;
@@ -93,7 +92,7 @@ class PhoneNumberVerification extends Component {
 		VerificationCode.verify({number, code})
 		.then(() => {
 			this.setState({isSubmitting: false});
-			this.props.onSuccess();
+			this.props.onSuccess(number);
 		})
 		.catch(() => {
 			this.setState({isSubmitting: false});
