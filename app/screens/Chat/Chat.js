@@ -119,12 +119,13 @@ class Chat extends Component {
 	 */
 	render() {
 		const {input} = this.state;
-		const {user, chat: {meta}} = this.props;
+		const {user, chat: {messages, meta}} = this.props;
 
 		return (
 			<ScreenWrapper>
 				{(() => {
 					if(user.id && !meta.isLoading) {
+
 						return (
 							<ScrollView 
 								ref={ref => this.scrollView = ref}
@@ -133,7 +134,17 @@ class Chat extends Component {
 							    }}
 								style={style.chatView}
 							>
-								{this.renderChatlogs()}
+							{(() => { 
+								if(messages.length == 0) {
+									return (
+										<Text style={{marginTop: 50}}>
+											No messages yet! Start a conversation today.
+										</Text>
+									);
+								}else {
+									return this.renderChatlogs();
+								}
+							})()}
 							</ScrollView>
 						);
 					}else if(meta.isLoading) {
