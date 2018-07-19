@@ -16,7 +16,7 @@ class SignUpStep2 extends Component {
 
 		this.state = this.getInitialState();
 
-		this.handleRegister = this.handleRegister.bind(this);
+		this.handleNumberWasVerified = this.handleNumberWasVerified.bind(this);
 	}
 
 	/**
@@ -33,80 +33,12 @@ class SignUpStep2 extends Component {
 		};
 	}
 
-	handleRegister() {
-		const Users = database.collection('Users');
-		const {email} = this.state;
-
-		this.setState({isSubmitting: true});
-
-		Users.where('Office.id', '==', officeId)
-			.where('email', '==', email)
-			.limit(1)
-			.get()
-			.then(snapshot => {
-				let alreadyExists = false;
-
-				snapshot.forEach(doc => {
-					if(doc.id) {
-						alert('An account with this email already exists.');
-						this.setState({isSubmitting: false});
-						alreadyExists = true;
-					}
-				});
-
-				if(!alreadyExists) this.createUserAccount();
-			})
-			.catch(err => {
-				console.warn(err);
-				this.setState({isSubmitting: false});
-			});
-
-		
-	}
-
 	/**
-	 * Create the new auth and user account
+	 * Continue to the next step when the number was verified
 	 * @return {Void} 
 	 */
-	createUserAccount() {
-		const Users = database.collection('Users');
-		const {email, password} = this.state;
-		const {id, name} = this.props.office;
-
-		firebase.auth().createUserWithEmailAndPassword(email, password)
-		.catch(({message}) => {
-			alert(message);
-			this.setState({isSubmitting: false});
-		});
-
-		firebase.auth().onAuthStateChanged((user) => {
-			if(user) {
-				const {uid: auth_id, email} = user;
-				const data = {
-					auth_id,
-					email,
-					isEmailVerified: false,
-					firstname: '',
-					lastname: '',
-					name: '',
-					photo: '',
-					phone_number: '',
-					Office: { id, name },
-					created_at: new Date(),
-					updated_at: new Date(),
-				};
-
-				Users.add(data).then((doc) => {
-					this.setState({isSubmitting: false});
-					this.props.setUserModel({id: doc.id, ...data});
-					this.props.navigation.navigate('App');
-				})
-				.catch(err => {
-					console.warn(err);
-					this.setState({isSubmitting: false});
-				});
-			}
-		});
+	handleNumberWasVerified() {
+		this.props.navigation.navigate('SignUpStep3');
 	}
 
 	/**
@@ -118,33 +50,11 @@ class SignUpStep2 extends Component {
 
 		return (
 			<ScreenWrapper>
-				<Text style={[style.title]}>Sign up today!</Text>
+				<Text style={[style.title]}>Verify your number</Text>
 				<Form>
-					<Item floatingLabel>
-						<Label>Email</Label>
-						<Input
-							autoCapitalize="none"
-							autoCorrect={false}
-							value={email}
-							onChangeText={(email) => this.setState({email})}
-						/>
-					</Item>
-
-					<Item floatingLabel>
-						<Label>Password</Label>
-						<Input
-							autoCapitalize="none"
-							autoCorrect={false}
-							secureTextEntry={true}
-							value={password}
-							onChangeText={(password) => this.setState({password})}
-						/>
-					</Item>
-
 					<Button
-						onPress={this.handleRegister}
-						loading={isSubmitting}
-						text="Sign Up"
+						onPress={this.handleNumberWasVerified}
+						text="Verify my phone number"
 					/>
 				</Form>
 			</ScreenWrapper>
