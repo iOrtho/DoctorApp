@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { View, Text, Spinner } from 'react-native';
-import { Form, Input, Item, Label } from 'native-base';
+import { Form, Input, Item, Label, DatePicker } from 'native-base';
 import { connect } from 'react-redux';
 import UserAction from 'app/store/actions/user';
+import moment from 'moment';
 import firebase, { database } from 'app/config/firebase';
 import ScreenWrapper from 'app/components/common/ScreenWrapper/';
 import Button from 'app/components/common/Button/';
@@ -30,6 +31,7 @@ class SignUpStep3 extends Component {
 			middlename: '',
 			lastname: '',
 			photo: '',
+			dob: null,
 			isSubmitting: false,
 			error: '',
 		};
@@ -40,7 +42,7 @@ class SignUpStep3 extends Component {
 	 * @return {Void} 
 	 */
 	handleRegisterValidation() {
-		const {firstname, lastname} = this.state;
+		const {firstname, lastname, dob} = this.state;
 
 		if(firstname.length < 2) {
 			alert('Please enter your first name.');
@@ -49,6 +51,11 @@ class SignUpStep3 extends Component {
 
 		if(lastname.length < 2) {
 			alert('Please enter your last name.');
+			return;
+		}
+
+		if(!dob) {
+			alert('Please enter your date of birth.');
 			return;
 		}
 
@@ -61,7 +68,7 @@ class SignUpStep3 extends Component {
 	 */
 	handleCreateUserAccount() {
 		const Users = database.collection('Users');
-		const {firstname, middlename, lastname, photo} = this.state;
+		const {firstname, middlename, lastname, photo, dob} = this.state;
 		const {email, password, phone_number} = this.props.user;
 		const {id, name} = this.props.office;
 
@@ -82,6 +89,7 @@ class SignUpStep3 extends Component {
 					lastname,
 					photo,
 					phone_number,
+					date_of_birth: dob,
 					name: `${firstname} ${middlename ? middlename+' ' : ''}${lastname}`,
 					isEmailVerified: false,
 					Office: { id, name },
@@ -135,6 +143,19 @@ class SignUpStep3 extends Component {
 							autoCorrect={false}
 							value={lastname}
 							onChangeText={(lastname) => this.setState({lastname})}
+						/>
+					</Item>
+
+					<Item>
+						<Label>Date of birth</Label>
+						<DatePicker
+							modalTransparent={true}
+							defaultDate={new Date(2000, 1, 1)}
+							minimumDate={new Date(1940, 1, 1)}
+							maximumDate={new Date(2010, 1, 1)}
+							onDateChange={(dob) => this.setState({dob})}
+							placeHolderText="Select your date of birth"
+							locale="en"
 						/>
 					</Item>
 
