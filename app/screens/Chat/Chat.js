@@ -21,7 +21,6 @@ class Chat extends Component {
 		this.chatview = React.createRef();
 		this.renderChatlogs = this.renderChatlogs.bind(this);
 		this.sendMessage = this.sendMessage.bind(this);
-		this.loadConversation = this.loadConversation.bind(this);
 	}
 
 	/**
@@ -38,32 +37,7 @@ class Chat extends Component {
 	 * Load the previous messages of this customer
 	 */
 	componentDidMount() {
-		//this.loadConversation();
 		this.props.asyncFetchMessages();
-	}
-
-	/**
-	 * Make a request to the firestore to load all messages relevant to this user and
-	 * connect to the live database
-	 * @return {Void} 
-	 */
-	loadConversation() {
-		const Messages = database.collection('Messages');
-		const {id} = this.props.user;
-		
-		Promise.all([
-			Messages.where('Author.id','==', id).get(),
-			Messages.where('recipient', '==', id).get()
-		])
-		.then(res => {
-			const messages = [];
-			res[0].forEach(doc => messages.push({...doc.data(), id: doc.id}));
-			res[1].forEach(doc => messages.push({...doc.data(), id: doc.id}));
-
-			this.props.setChatMessages(messages);
-			this.props.asyncFetchMessages();
-		})
-		.catch(err => console.log(err));
 	}
 
 	/**
