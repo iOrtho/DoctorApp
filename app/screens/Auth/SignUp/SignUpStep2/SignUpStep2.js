@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import UserAction from 'app/store/actions/user';
 import firebase, { database } from 'app/config/firebase';
 import ScreenWrapper from 'app/components/common/ScreenWrapper/';
+import PhoneNumberVerification from 'app/components/PhoneNumberVerification/';
 import Button from 'app/components/common/Button/';
 import style from './style';
 
@@ -45,12 +46,11 @@ class SignUpStep2 extends Component {
 		return (
 			<ScreenWrapper>
 				<Text style={[style.title]}>Verify your number</Text>
-				<Form>
-					<Button
-						onPress={this.handleNumberWasVerified}
-						text="Verify my phone number"
+					<PhoneNumberVerification
+						purpose="signup"
+						onSuccess={this.handleNumberWasVerified}
+						style={[{marginTop: 30}]}
 					/>
-				</Form>
 			</ScreenWrapper>
 		);
 	}
