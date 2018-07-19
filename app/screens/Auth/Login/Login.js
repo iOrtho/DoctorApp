@@ -71,7 +71,7 @@ class Login extends Component {
 	 */
 	render() {
 		const {isSubmitting, email, password} = this.state;
-		const {authIsChecked} = this.props.user;
+		const {navigation, user: {authIsChecked}} = this.props;
 
 		return (
 			<ScreenWrapper>
@@ -102,6 +102,10 @@ class Login extends Component {
 						onPress={this.handleSignIn}
 						loading={isSubmitting || !authIsChecked}
 						text="Sign In"
+					/>
+					<Button
+						text="Sign Up"
+						onPress={() => navigation.navigate('SignUp')}
 					/>
 				</Form>
 			</ScreenWrapper>
