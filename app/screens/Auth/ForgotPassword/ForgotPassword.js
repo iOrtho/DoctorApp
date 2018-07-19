@@ -26,7 +26,7 @@ class ForgotPassword extends Component {
 	 */
 	getInitialState() {
 		return {
-			stage: 2,
+			stage: 1,
 			password: '',
 			repeated: '',
 			isSubmitting: false,
