@@ -43,11 +43,14 @@ class SignUpStep2 extends Component {
 	 * @return {ReactElement} 
 	 */
 	render() {
+		const {office} = this.props;
+		
 		return (
 			<ScreenWrapper>
 				<Text style={[style.title]}>Verify your number</Text>
 					<PhoneNumberVerification
 						purpose="signup"
+						officeId={office.id}
 						onSuccess={this.handleNumberWasVerified}
 						style={[{marginTop: 30}]}
 					/>
