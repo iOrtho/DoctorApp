@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { Root } from 'native-base';
 import { Provider } from 'react-redux';
 import UserAction from 'app/store/actions/user';
 import OfficeAction from 'app/store/actions/office';
@@ -58,7 +59,9 @@ export default class App extends React.Component {
     render() {
         return (
             <Provider store={store}>
-                <Router />
+                <Root>
+                    <Router />
+                </Root>
             </Provider>
         );
     }

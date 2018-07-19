@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Image, Text, ActivityIndicator } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 import Swiper from 'react-native-swiper';
 import ScreenWrapper from 'app/components/common/ScreenWrapper';
 import ScreenLoading from 'app/components/common/ScreenLoading';
@@ -82,25 +82,25 @@ class Home extends Component {
 				<ScreenWrapper style={[{paddingTop: 0}]}>
 					<Text style={[style.title]}>{office.name}</Text>
 
-					<QuickHelp style={[{marginBottom: 15}]} />
+					<QuickHelp office={office} style={[{marginBottom: 15}]} />
 
 					{office.ready && <OperatingHours hours={office.operating_hours} />}
 
-					<View style={{flex: 2, backgroundColor: 'lime'}}>
+					<View style={{height: 200, backgroundColor: 'lime'}}>
 						<Text>Review container</Text>
 					</View>
 
-					<View style={{flex: 3, backgroundColor: 'green'}}>
+					<View style={{height: 200, backgroundColor: 'green'}}>
 						<Text>"Office Description/Bio"</Text>
 					</View>
 
 					<Text style={[style.title]}>About the Doctor</Text>
 
-					<View style={{flex: 3, backgroundColor: 'turquoise'}}>
+					<View style={{height: 200, backgroundColor: 'turquoise'}}>
 						<Text>Picture of Doctor?</Text>
 					</View>
 
-					<View style={{flex: 3, backgroundColor: 'lightblue'}}>
+					<View style={{height: 200, backgroundColor: 'lightblue'}}>
 						<Text>Bio of Doctor</Text>
 					</View>
 				</ScreenWrapper>
