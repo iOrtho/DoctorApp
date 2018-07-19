@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import { Form, Item, Input, Label } from 'native-base';
 import VerificationCode from 'app/lib/VerificationCode';
+import { database } from 'app/config/firebase';
 import Button from 'app/components/common/Button';
 import style from './style';
 
@@ -49,17 +50,42 @@ class PhoneNumberVerification extends Component {
 		return number;
 	}
 
+	/**
+	 * Perform validation on the phone number before sending the code
+	 * @return {Void} 
+	 */
 	handleSendCode() {
+		const Users = database.collection('Users');
+		const {officeId, purpose} = this.props;
 		const {number} = this.state;
 		this.setState({isSubmitting: true});
 
-		VerificationCode.sendTo(number)
-		.then(() => {
-			this.setState({stage: 2, isSubmitting: false});
-		})
-		.catch(() => this.setState({isSubmitting: false}));
+		Users.where('Office.id', '==', officeId)
+			.where('phone_number', '==', number)
+			.get()
+			.then(snap => {
+				if(purpose == 'signup' && snap.size == 1) {
+					alert('This phone number is already in use.');
+					this.setState({isSubmitting: false});
+					return;
+				}
+
+				if(purpose == 'reset' && snap.size != 1) {
+					alert('No user account with this phone number was found');
+					this.setState({isSubmitting: false})
+					return;
+				}
+
+				VerificationCode.sendTo(number)
+				.then(() => this.setState({stage: 2, isSubmitting: false}))
+				.catch(() => this.setState({isSubmitting: false}));
+			});
 	}
 
+	/**
+	 * Handle the verifying of the entered security code
+	 * @return {Void} 
+	 */
 	handleVerifyCode() {
 		const {number, code} = this.state;
 		this.setState({isSubmitting: true});
@@ -138,6 +164,7 @@ class PhoneNumberVerification extends Component {
 
 PhoneNumberVerification.propTypes = {
 	purpose: PropTypes.oneOf(['signup', 'reset']).isRequired,
+	officeId: PropTypes.string.isRequired,
 	onSuccess: PropTypes.func.isRequired,
 	style: PropTypes.array,
 };
