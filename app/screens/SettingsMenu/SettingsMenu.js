@@ -24,13 +24,15 @@ class SettingsMenu extends Component {
 		return {
             items: [
                 {id: 1, label: 'Terms and Conditions of Use', action: null},
-                {id: 2, label: 'Log out', action: this.handleLogout},
+                {id: 2, label: 'Log out', action: () => this.handleLogout()},
             ]
 		};
 	}
 
     handleLogout() {
-        auth().signOut().catch(err => console.warn(err));
+        auth().signOut()
+	        .then(() => setTimeout(() => this.props.navigation.navigate('Auth'), 500))
+	        .catch(console.error);
     }
 
 	/**
