@@ -5,8 +5,9 @@ import { Form, Item, Input, Label } from 'native-base';
 import UserAction from 'app/store/actions/user';
 import ScreenWrapper from 'app/components/common/ScreenWrapper/';
 import Button from 'app/components/common/Button/';
+import Link from 'app/components/common/Link/';
 import { auth } from 'app/config/firebase';
-import style from './style';
+import style from '../style';
 
 class Login extends Component {
 
@@ -74,7 +75,7 @@ class Login extends Component {
 		const {navigation, user: {authIsChecked}} = this.props;
 
 		return (
-			<ScreenWrapper>
+			<ScreenWrapper style={[{height: '100%'}]}>
 				<Form>
 					<Text>Sign into your account</Text>
 					<Item floatingLabel>
@@ -108,6 +109,9 @@ class Login extends Component {
 						onPress={() => navigation.navigate('SignUp')}
 					/>
 				</Form>
+				<Link onPress={() => navigation.navigate('ForgotPassword')} style={[style.forgotPasswordLink]}>
+					Forgot your password? Press here to reset it.
+				</Link>
 			</ScreenWrapper>
 		);
 	}
