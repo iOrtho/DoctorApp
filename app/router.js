@@ -9,7 +9,8 @@ import Home from 'app/screens/Home/';
 import Medical from 'app/screens/Medical/';
 import Login from 'app/screens/Auth/Login/';
 import Settings from 'app/screens/SettingsMenu/';
-import SignUp from 'app/screens/Auth/SignUp/';
+import SignUpStep1 from 'app/screens/Auth/SignUp/SignUpStep1/';
+import SignUpStep2 from 'app/screens/Auth/SignUp/SignUpStep2/';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styling from 'app/config/styling';
 
@@ -76,7 +77,8 @@ const AppTabs = createBottomTabNavigator(
 
 const AuthStack = createStackNavigator({
 	Login,
-	SignUp,
+	SignUp: SignUpStep1,
+	SignUpStep2,
 });
 
 const AppNavigator = createSwitchNavigator(

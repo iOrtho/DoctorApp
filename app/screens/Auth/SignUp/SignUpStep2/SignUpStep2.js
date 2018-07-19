@@ -8,7 +8,7 @@ import ScreenWrapper from 'app/components/common/ScreenWrapper/';
 import Button from 'app/components/common/Button/';
 import style from './style';
 
-class SignUp extends Component {
+class SignUpStep2 extends Component {
 
 	/** The component's constructor */
 	constructor(props) {
@@ -152,7 +152,7 @@ class SignUp extends Component {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUp);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpStep2);
 
 /**
  * Map the redux store's state to the component's props
