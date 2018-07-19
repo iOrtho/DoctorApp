@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, Text, Spinner } from 'react-native';
-import { Form, Input, Item, Label } from 'native-base';
 import { connect } from 'react-redux';
 import UserAction from 'app/store/actions/user';
 import firebase, { database } from 'app/config/firebase';
