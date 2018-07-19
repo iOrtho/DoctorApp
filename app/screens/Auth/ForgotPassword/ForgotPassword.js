@@ -18,6 +18,7 @@ class ForgotPassword extends Component {
 		this.state = this.getInitialState();
 
 		this.handleResetPassword = this.handleResetPassword.bind(this);
+		this.handleSendResetEmail = this.handleSendResetEmail.bind(this);
 	}
 
 	/**
@@ -27,6 +28,7 @@ class ForgotPassword extends Component {
 	getInitialState() {
 		return {
 			stage: 1,
+			email: '',
 			password: '',
 			repeated: '',
 			isSubmitting: false,
@@ -62,19 +64,11 @@ class ForgotPassword extends Component {
 			});
 	}
 
-	/**
-	 * Render the component's markup
-	 * @return {ReactElement} 
-	 */
-	render() {
-		const {stage, password, repeated, isSubmitting} = this.state;
-		const {office} = this.props;
-		const title = stage == 1 ? 'Verify your number' : 'Update your password';
-
+	/*resetViaNumberSecurity() {
+		this method is the preferred but cannot be used due to Firebase's restrictions
+		I'll keep it here until I can find a way to incorporate it
 		return (
-			<ScreenWrapper>
-					<Text style={[style.title]}>{title}</Text>
-					{stage == 1 && 
+			{stage == 1 && 
 						<PhoneNumberVerification
 							purpose="reset"
 							officeId={office.id}
@@ -111,6 +105,56 @@ class ForgotPassword extends Component {
 								onPress={this.handleResetPassword}
 							/>
 						</Form>}
+		);
+	}*/
+
+	/**
+	 * Send a reset password link to the email provided
+	 * @return {Void} 
+	 */
+	handleSendResetEmail() {
+		const {email} = this.state;
+
+		this.setState({isSubmitting: true});
+
+		auth().sendPasswordResetEmail(email).then(() => {
+			this.setState({isSubmitting: false});
+			alert('A reset email was successfully sent to that address.');
+		})
+		.catch(err => {
+			this.setState({isSubmitting: false});
+			alert('No user with this email address could be found in our records.');
+		});
+	}
+	/**
+	 * Render the component's markup
+	 * @return {ReactElement} 
+	 */
+	render() {
+		const {stage, email, isSubmitting} = this.state;
+		const {office} = this.props;
+		const title = stage == 1 ? 'Verify your email' : 'Update your password';
+
+		return (
+			<ScreenWrapper>
+					<Text style={[style.title]}>{title}</Text>
+					<Form>
+						<Item floatingLabel>
+							<Label>Email</Label>
+							<Input
+								textContentType="emailAddress"
+								autoCapitalize="none"
+								autoCorrect={false}
+								value={email}
+								onChangeText={(email) => this.setState({email})}
+							/>
+						</Item>
+						<Button
+							text="Send reset link"
+							loading={isSubmitting}
+							onPress={this.handleSendResetEmail}
+						/>
+					</Form>
 			</ScreenWrapper>
 		);
 	}
