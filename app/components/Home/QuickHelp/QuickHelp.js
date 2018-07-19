@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text, Platform, Linking, Alert, Clipboard } from 'react-native';
+import { ScrollView, View, Text, Platform, Linking, Alert, Clipboard, Share } from 'react-native';
 import PropTypes from 'prop-types';
 import { Button, ActionSheet } from 'native-base';
+import { phonecall } from 'react-native-communications';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import AppButton from 'app/components/common/Button';
 import styling from 'app/config/styling';
@@ -15,6 +16,7 @@ class QuickHelp extends Component {
 
 		this.state = this.getInitialState();
 
+		this.openCallMenu = this.openCallMenu.bind(this);
 		this.openMapMenu = this.openMapMenu.bind(this);
 	}
 
@@ -25,12 +27,42 @@ class QuickHelp extends Component {
 	getInitialState() {
 		return {
 			buttons: [
-				{icon: 'phone', title: 'Call', onPress: null},
+				{icon: 'phone', title: 'Call', onPress: () => this.openCallMenu()},
 				{icon: 'map-marker', title: 'Directions', onPress: () => this.openMapMenu(), iconSize: 26},
-				{icon: 'share', title: 'Share', onPress: null},
+				{icon: 'share', title: 'Share', onPress: () => this.openShareDialog()},
 			],
 		};
 	}
+
+	/**
+	 * Open the dialog to share a written message
+	 * @return {Void} 
+	 */
+	openShareDialog() {
+		Share.share({
+			title: 'Check out this really useful app!',
+			message: 'Hey check out the iOrtho app, it\'s really convenient to use.',
+			url: 'http://google.com',
+		});
+	}
+
+	/**
+	 * Display the menu of different options for the call button
+	 * @return {Void} 
+	 */
+	openCallMenu() {
+		const {number} = this.props.office;
+		const actions = ['call', 'copy', 'cancel'];
+
+		ActionSheet.show({
+			options: ['Call', 'Copy Number', 'Cancel'],
+			cancelButtonIndex: 2,
+			title: number,
+		}, (index) => {
+			this.handleMapAction(actions[index], index == 0 ? number : null);
+		});
+	}
+
 
 	/**
 	 * Display the menu of different options for the directions
@@ -48,6 +80,21 @@ class QuickHelp extends Component {
 		}, (index) => {
 			this.handleMapAction(actions[index], index == 0 ? fullAddress : null);
 		});
+	}
+
+	/**
+	 * Handle the action to perform based on the choice in the call menu
+	 * @param  {String} action The ID of the selected option
+	 * @param  {String} number The number of the office 
+	 * @return {Void}        
+	 */
+	handleCallAction(action, number) {
+		if(action == 'call') {
+			phonecall(number, true);
+		}else if(action == 'copy') {
+			Clipboard.setString(number);
+			Alert.alert('Success','The number was copied to the clipboard!');
+		}
 	}
 
 	/**
