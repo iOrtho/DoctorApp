@@ -16,7 +16,7 @@ class SignUpStep1 extends Component {
 
 		this.state = this.getInitialState();
 
-		this.handleRegister = this.handleRegister.bind(this);
+		this.handleRegisterValidation = this.handleRegisterValidation.bind(this);
 	}
 
 	/**
@@ -27,25 +27,37 @@ class SignUpStep1 extends Component {
 		return {
 			email: '',
 			password: '',
-			number: '',
 			isSubmitting: false,
 			error: '',
 		};
 	}
 
-	handleRegister() {
+	/**
+	 * Validate the email and password before attempting to create an account
+	 * @return {Void} 
+	 */
+	handleRegisterValidation() {
 		const Users = database.collection('Users');
-		const {email} = this.state;
+		const {id} = this.props.office;
+		const {email, password} = this.state;
+
+		if(password.length < 6) {
+			alert('For security reasons your password needs to be at least 6 characters!');
+			return;
+		}
+
+		if(email.length < 7) {
+			alert('Please enter a valid email address.');
+			return;
+		}
 
 		this.setState({isSubmitting: true});
-
-		Users.where('Office.id', '==', officeId)
+		Users.where('Office.id', '==', id)
 			.where('email', '==', email)
 			.limit(1)
 			.get()
 			.then(snapshot => {
 				let alreadyExists = false;
-
 				snapshot.forEach(doc => {
 					if(doc.id) {
 						alert('An account with this email already exists.');
@@ -54,7 +66,9 @@ class SignUpStep1 extends Component {
 					}
 				});
 
-				if(!alreadyExists) this.createUserAccount();
+				if(!alreadyExists) {
+				this.props.navigation.navigate('SignUpStep2'); //this.createUserAccount();
+				}
 			})
 			.catch(err => {
 				console.warn(err);
@@ -87,6 +101,7 @@ class SignUpStep1 extends Component {
 					email,
 					isEmailVerified: false,
 					firstname: '',
+					middlename: '',
 					lastname: '',
 					name: '',
 					photo: '',
@@ -142,7 +157,7 @@ class SignUpStep1 extends Component {
 					</Item>
 
 					<Button
-						onPress={this.handleRegister}
+						onPress={this.handleRegisterValidation}
 						loading={isSubmitting}
 						text="Sign Up"
 					/>
