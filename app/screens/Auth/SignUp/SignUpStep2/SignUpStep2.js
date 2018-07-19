@@ -25,11 +25,6 @@ class SignUpStep2 extends Component {
 	 */
 	getInitialState() {
 		return {
-			email: '',
-			password: '',
-			number: '',
-			isSubmitting: false,
-			error: '',
 		};
 	}
 
@@ -46,8 +41,6 @@ class SignUpStep2 extends Component {
 	 * @return {ReactElement} 
 	 */
 	render() {
-		const {email, password, number, isSubmitting} = this.state;
-
 		return (
 			<ScreenWrapper>
 				<Text style={[style.title]}>Verify your number</Text>
