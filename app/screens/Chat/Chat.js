@@ -6,6 +6,7 @@ import Message from 'app/components/Chat/Message/';
 import { connect } from 'react-redux';
 import ChatAction from 'app/store/actions/chat';
 import { database } from 'app/config/firebase';
+import style from './style';
 
 const companyId = 'ow71aFnAQgLAbQuF9KIQ';
 const customerId = 'KHHNbjR2iooYQJpHyfSq';
@@ -20,7 +21,6 @@ class Chat extends Component {
 		this.chatview = React.createRef();
 		this.renderChatlogs = this.renderChatlogs.bind(this);
 		this.sendMessage = this.sendMessage.bind(this);
-		this.loadConversation = this.loadConversation.bind(this);
 	}
 
 	/**
@@ -37,50 +37,27 @@ class Chat extends Component {
 	 * Load the previous messages of this customer
 	 */
 	componentDidMount() {
-		//this.loadConversation();
 		this.props.asyncFetchMessages();
 	}
 
 	/**
-	 * Make a request to the firestore to load all messages relevant to this user and
-	 * connect to the live database
+	 * Create the new message collection entry
 	 * @return {Void} 
 	 */
-	loadConversation() {
-		const Messages = database.collection('Messages');
-		const {id} = this.props.user;
-		
-		Promise.all([
-			Messages.where('Author.id','==', id).get(),
-			Messages.where('recipient', '==', id).get()
-		])
-		.then(res => {
-			const messages = [];
-			res[0].forEach(doc => messages.push({...doc.data(), id: doc.id}));
-			res[1].forEach(doc => messages.push({...doc.data(), id: doc.id}));
-
-			this.props.setChatMessages(messages);
-			this.props.asyncFetchMessages();
-		})
-		.catch(err => console.log(err));
-	}
-
 	sendMessage() {
-		const {input: body} = this.state;
-		const {id, name} = this.props.user;
-		const recipient = id == companyId ? customerId : companyId;
+		const {input: content} = this.state;
+		const {office, user: {id, name}} = this.props;
 
 		if(body.length < 3) return;
 
 		this.setState({input: ''});
-		
 		database.collection('Messages').doc().set({
-			body,
-			recipient,
-			Author: {
-				id,
-				name,
+			body: {
+				type: 'text',
+				content,
 			},
+			recipient: office.id,
+			Author: { id, name },
 			created_at: new Date(),
 		})
 		.then(() => {
@@ -88,19 +65,25 @@ class Chat extends Component {
 		})
 		.catch((err) => {
 			console.log('Error:', err);
-		})
+		});
 	}
 
+	/**
+	 * Render the chat history
+	 * @return {ReactElement} 
+	 */
 	renderChatlogs() {
 		const {user, chat} = this.props;
 
-		return chat.messages.map(({id, body, Author, self}) => {
-			return (<Message 
-						key={id}
-						content={body}
-						author={Author}
-						isAuthor={user.id == Author.id} 
-					/>);
+		return chat.messages.map(({id, body, Author}) => {
+			return (
+				<Message 
+					key={id}
+					content={body}
+					author={Author}
+					isAuthor={user.id == Author.id} 
+				/>
+			);
 		});
 	}
 
@@ -110,30 +93,39 @@ class Chat extends Component {
 	 */
 	render() {
 		const {input} = this.state;
-		const {user, chat: {meta}} = this.props;
+		const {user, chat: {messages, meta}} = this.props;
 
 		return (
 			<ScreenWrapper>
-				<Text>Hello this is a Chatroom with Verdi.</Text>
-				{user.id && <Text style={{margin: 10, textAlign: 'center', color: 'green'}}>Signed in as {user.email}</Text>}
 				{(() => {
 					if(user.id && !meta.isLoading) {
+
 						return (
 							<ScrollView 
 								ref={ref => this.scrollView = ref}
 							    onContentSizeChange={(contentWidth, contentHeight)=>{        
 							        this.scrollView.scrollToEnd({animated: true});
 							    }}
-								style={{display: 'flex', flexDirection: 'column', height: '70%'}}
+								style={style.chatView}
 							>
-								{this.renderChatlogs()}
+							{(() => { 
+								if(messages.length == 0) {
+									return (
+										<Text style={{marginTop: 50}}>
+											No messages yet! Start a conversation today.
+										</Text>
+									);
+								}else {
+									return this.renderChatlogs();
+								}
+							})()}
 							</ScrollView>
 						);
 					}else if(meta.isLoading) {
 						return (<Spinner />);
 					}
 				})()}
-				<View style={{display: 'flex', flexDirection: 'column', flex:1, marginBottom: 50}}>
+				<View style={style.sender}>
 					<Item>
 						<Input
 							placeholder="Enter your message"
@@ -143,10 +135,7 @@ class Chat extends Component {
 						/>
 					</Item>
 					<Item>
-						<Button 
-							onPress={this.sendMessage}
-							style={{flex: 1, justifyContent: 'center'}}
-						>
+						<Button onPress={this.sendMessage} style={style.submitMessage}>
 							<Text style={{color: '#fff'}}>Submit message</Text>
 						</Button>
 					</Item>
