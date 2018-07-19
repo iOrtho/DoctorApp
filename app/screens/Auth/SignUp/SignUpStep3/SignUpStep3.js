@@ -16,6 +16,7 @@ class SignUpStep3 extends Component {
 
 		this.state = this.getInitialState();
 
+		this.handleRegisterValidation = this.handleCreateUserAccount.bind(this);
 		this.handleCreateUserAccount = this.handleCreateUserAccount.bind(this);
 	}
 
@@ -81,7 +82,7 @@ class SignUpStep3 extends Component {
 					lastname,
 					photo,
 					phone_number,
-					name: `${firstname} ${middlename} ${lastname}`,
+					name: `${firstname} ${middlename ? middlename+' ' : ''}${lastname}`,
 					isEmailVerified: false,
 					Office: { id, name },
 					created_at: new Date(),
@@ -89,7 +90,6 @@ class SignUpStep3 extends Component {
 				};
 
 				Users.add(data).then((doc) => {
-					this.setState({isSubmitting: false});
 					this.props.setUserModel({id: doc.id, ...data});
 					this.props.navigation.navigate('App');
 				})
@@ -124,7 +124,7 @@ class SignUpStep3 extends Component {
 						<Label>Middle name</Label>
 						<Input
 							autoCorrect={false}
-							placeholder="Optional"
+							placeholder="(Optional)"
 							value={middlename}
 							onChangeText={(middlename) => this.setState({middlename})}
 						/>
