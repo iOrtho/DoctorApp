@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { View, Text } from 'react-native';
 import { Form, Item, Input, Label } from 'native-base';
+import VerificationCode from 'app/lib/VerificationCode';
 import Button from 'app/components/common/Button';
 import style from './style';
 
@@ -36,7 +37,7 @@ class PhoneNumberVerification extends Component {
 	 * @return {String}        
 	 */
 	formatPhoneNumber(number) {
-		if(number.length == 10 && !number.includes(' ')) {
+		if(number.length == 10 && !number.includes('-')) {
 			let result = [];
 			[...number].forEach((char, i) => {
 				if(i == 3 || i == 6) result.push('-');
@@ -49,22 +50,29 @@ class PhoneNumberVerification extends Component {
 	}
 
 	handleSendCode() {
+		const {number} = this.state;
 		this.setState({isSubmitting: true});
 
-		// Simulate async API call
-		setTimeout(() => {
+		VerificationCode.sendTo(number)
+		.then(() => {
 			this.setState({stage: 2, isSubmitting: false});
-		}, 1500);
+		})
+		.catch(() => this.setState({isSubmitting: false}));
 	}
 
 	handleVerifyCode() {
+		const {number, code} = this.state;
 		this.setState({isSubmitting: true});
 
-		// Simulate async API call
-		setTimeout(() => {
+		VerificationCode.verify({number, code})
+		.then(() => {
 			this.setState({isSubmitting: false});
 			this.props.onSuccess();
-		}, 1500);
+		})
+		.catch(() => {
+			this.setState({isSubmitting: false});
+			alert('The security code you entered does not match our records.');
+		});
 	}
 
 	/**
