@@ -23,11 +23,12 @@ export default class App extends React.Component {
                 Users.where('auth_id', '==', user.uid).onSnapshot(snap => {
                     snap.docChanges().forEach(change => {
                         const data = {
-                            id: change.doc.id,
                             ...change.doc.data(),
+                            id: change.doc.id,
                             authIsChecked: true,
                         };
 
+                        store.dispatch(UserAction.resetUserModel());
                         store.dispatch(UserAction.setUserModel(data));
                     });
                 });
