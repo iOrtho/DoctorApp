@@ -67,7 +67,8 @@ class SignUpStep1 extends Component {
 				});
 
 				if(!alreadyExists) {
-				this.props.navigation.navigate('SignUpStep2'); //this.createUserAccount();
+					this.props.setUserModel({email, password});
+					this.props.navigation.navigate('SignUpStep2'); //this.createUserAccount();
 				}
 			})
 			.catch(err => {

@@ -33,6 +33,7 @@ class SignUpStep2 extends Component {
 	 * @return {Void} 
 	 */
 	handleNumberWasVerified() {
+		this.props.setUserModel({phone_number: '+11234567890'});
 		this.props.navigation.navigate('SignUpStep3');
 	}
 
