@@ -159,7 +159,7 @@ class SignUpStep1 extends Component {
 					<Button
 						onPress={this.handleRegisterValidation}
 						loading={isSubmitting}
-						text="Sign Up"
+						text="Continue"
 					/>
 				</Form>
 			</ScreenWrapper>
