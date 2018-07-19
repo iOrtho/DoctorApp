@@ -6,6 +6,7 @@ import Message from 'app/components/Chat/Message/';
 import { connect } from 'react-redux';
 import ChatAction from 'app/store/actions/chat';
 import { database } from 'app/config/firebase';
+import style from './style';
 
 const companyId = 'ow71aFnAQgLAbQuF9KIQ';
 const customerId = 'KHHNbjR2iooYQJpHyfSq';
@@ -65,22 +66,24 @@ class Chat extends Component {
 		.catch(err => console.log(err));
 	}
 
+	/**
+	 * Create the new message collection entry
+	 * @return {Void} 
+	 */
 	sendMessage() {
-		const {input: body} = this.state;
-		const {id, name} = this.props.user;
-		const recipient = id == companyId ? customerId : companyId;
+		const {input: content} = this.state;
+		const {office, user: {id, name}} = this.props;
 
 		if(body.length < 3) return;
 
 		this.setState({input: ''});
-		
 		database.collection('Messages').doc().set({
-			body,
-			recipient,
-			Author: {
-				id,
-				name,
+			body: {
+				type: 'text',
+				content,
 			},
+			recipient: office.id,
+			Author: { id, name },
 			created_at: new Date(),
 		})
 		.then(() => {
@@ -88,19 +91,25 @@ class Chat extends Component {
 		})
 		.catch((err) => {
 			console.log('Error:', err);
-		})
+		});
 	}
 
+	/**
+	 * Render the chat history
+	 * @return {ReactElement} 
+	 */
 	renderChatlogs() {
 		const {user, chat} = this.props;
 
-		return chat.messages.map(({id, body, Author, self}) => {
-			return (<Message 
-						key={id}
-						content={body}
-						author={Author}
-						isAuthor={user.id == Author.id} 
-					/>);
+		return chat.messages.map(({id, body, Author}) => {
+			return (
+				<Message 
+					key={id}
+					content={body}
+					author={Author}
+					isAuthor={user.id == Author.id} 
+				/>
+			);
 		});
 	}
 
@@ -114,8 +123,6 @@ class Chat extends Component {
 
 		return (
 			<ScreenWrapper>
-				<Text>Hello this is a Chatroom with Verdi.</Text>
-				{user.id && <Text style={{margin: 10, textAlign: 'center', color: 'green'}}>Signed in as {user.email}</Text>}
 				{(() => {
 					if(user.id && !meta.isLoading) {
 						return (
@@ -124,7 +131,7 @@ class Chat extends Component {
 							    onContentSizeChange={(contentWidth, contentHeight)=>{        
 							        this.scrollView.scrollToEnd({animated: true});
 							    }}
-								style={{display: 'flex', flexDirection: 'column', height: '70%'}}
+								style={style.chatView}
 							>
 								{this.renderChatlogs()}
 							</ScrollView>
@@ -133,7 +140,7 @@ class Chat extends Component {
 						return (<Spinner />);
 					}
 				})()}
-				<View style={{display: 'flex', flexDirection: 'column', flex:1, marginBottom: 50}}>
+				<View style={style.sender}>
 					<Item>
 						<Input
 							placeholder="Enter your message"
@@ -143,10 +150,7 @@ class Chat extends Component {
 						/>
 					</Item>
 					<Item>
-						<Button 
-							onPress={this.sendMessage}
-							style={{flex: 1, justifyContent: 'center'}}
-						>
+						<Button onPress={this.sendMessage} style={style.submitMessage}>
 							<Text style={{color: '#fff'}}>Submit message</Text>
 						</Button>
 					</Item>
