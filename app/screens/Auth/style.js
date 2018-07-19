@@ -10,5 +10,13 @@ export default StyleSheet.create({
 	},
 	button: {
 		width: '100%',
-	}
+	},
+	forgotPasswordLink: {
+		position: 'absolute',
+		bottom: 25,
+		alignSelf: 'center',
+	},
+	input: {
+		color: '#fff',
+	},
 });

@@ -6,7 +6,7 @@ import firebase, { database } from 'app/config/firebase';
 import ScreenWrapper from 'app/components/common/ScreenWrapper/';
 import PhoneNumberVerification from 'app/components/PhoneNumberVerification/';
 import Button from 'app/components/common/Button/';
-import style from './style';
+import style from '../../style';
 
 class SignUpStep2 extends Component {
 
