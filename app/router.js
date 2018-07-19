@@ -11,6 +11,7 @@ import Login from 'app/screens/Auth/Login/';
 import Settings from 'app/screens/SettingsMenu/';
 import SignUpStep1 from 'app/screens/Auth/SignUp/SignUpStep1/';
 import SignUpStep2 from 'app/screens/Auth/SignUp/SignUpStep2/';
+import SignUpStep3 from 'app/screens/Auth/SignUp/SignUpStep3/';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styling from 'app/config/styling';
 
@@ -79,6 +80,7 @@ const AuthStack = createStackNavigator({
 	Login,
 	SignUp: SignUpStep1,
 	SignUpStep2,
+	SignUpStep3,
 });
 
 const AppNavigator = createSwitchNavigator(
