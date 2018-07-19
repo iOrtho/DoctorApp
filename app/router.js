@@ -8,6 +8,7 @@ import Chat from 'app/screens/Chat/';
 import Home from 'app/screens/Home/';
 import Medical from 'app/screens/Medical/';
 import Login from 'app/screens/Auth/Login/';
+import ForgotPassword from 'app/screens/Auth/ForgotPassword/';
 import Settings from 'app/screens/SettingsMenu/';
 import SignUpStep1 from 'app/screens/Auth/SignUp/SignUpStep1/';
 import SignUpStep2 from 'app/screens/Auth/SignUp/SignUpStep2/';
@@ -81,6 +82,7 @@ const AuthStack = createStackNavigator({
 	SignUp: SignUpStep1,
 	SignUpStep2,
 	SignUpStep3,
+	ForgotPassword,
 });
 
 const AppNavigator = createSwitchNavigator(

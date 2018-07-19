@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text, Spinner } from 'react-native';
-import { Form, Input, Item, Label } from 'native-base';
 import { connect } from 'react-redux';
 import UserAction from 'app/store/actions/user';
 import firebase, { database } from 'app/config/firebase';
 import ScreenWrapper from 'app/components/common/ScreenWrapper/';
 import PhoneNumberVerification from 'app/components/PhoneNumberVerification/';
 import Button from 'app/components/common/Button/';
-import style from './style';
+import style from '../../style';
 
 class SignUpStep2 extends Component {
 
@@ -53,7 +52,6 @@ class SignUpStep2 extends Component {
 						purpose="signup"
 						officeId={office.id}
 						onSuccess={this.handleNumberWasVerified}
-						style={[{marginTop: 30}]}
 					/>
 			</ScreenWrapper>
 		);
