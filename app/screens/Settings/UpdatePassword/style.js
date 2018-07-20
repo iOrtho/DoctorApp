@@ -1,7 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-	container: {
-		
-	}
+	title: {
+		textAlign: 'center',
+		fontSize: 25,
+		marginBottom: 40,
+	},
 });

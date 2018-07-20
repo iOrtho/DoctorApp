@@ -44,6 +44,7 @@ class UpdatePassword extends Component {
 		return (
 			<ScreenWrapper>
 				<Text style={[style.title]}>Update password</Text>
+				<Text>Make sure that your new password is at least 6 characters long for security.</Text>
 				<Form>
 					<Item floatingLabel>
 						<Label>Current password</Label>
