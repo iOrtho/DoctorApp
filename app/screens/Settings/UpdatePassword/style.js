@@ -6,4 +6,7 @@ export default StyleSheet.create({
 		fontSize: 25,
 		marginBottom: 40,
 	},
+	center: {
+		textAlign: 'center',
+	},
 });
