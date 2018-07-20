@@ -9,7 +9,7 @@ import Home from 'app/screens/Home/';
 import Medical from 'app/screens/Medical/';
 import Login from 'app/screens/Auth/Login/';
 import ForgotPassword from 'app/screens/Auth/ForgotPassword/';
-import SettingsMenu from 'app/screens/SettingsMenu/';
+import SettingsMenu from 'app/screens/Settings/SettingsMenu/';
 import SignUpStep1 from 'app/screens/Auth/SignUp/SignUpStep1/';
 import SignUpStep2 from 'app/screens/Auth/SignUp/SignUpStep2/';
 import SignUpStep3 from 'app/screens/Auth/SignUp/SignUpStep3/';
