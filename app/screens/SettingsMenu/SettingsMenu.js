@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Linking } from 'react-native';
 import { Content, Right, Left, Icon, List, ListItem } from 'native-base';
 import ScreenWrapper from 'app/components/common/ScreenWrapper';
 import { auth } from 'app/config/firebase';
@@ -13,6 +13,7 @@ class SettingsMenu extends Component {
 
 		this.state = this.getInitialState();
 
+        this.navigateTo = this.navigateTo.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
 	}
 
@@ -23,10 +24,19 @@ class SettingsMenu extends Component {
 	getInitialState() {
 		return {
             items: [
-                {id: 1, label: 'Terms and Conditions of Use', action: null},
+                {id: 5, label: 'My Tokens', action: null},
+                {id: 4, label: 'My Account Details', action: null},
+                {id: 6, label: 'Update Password', action: () => this.navigateTo('UpdatePassword')},
+                {id: 3, label: 'Application Settings', action: null},
+                {id: 1, label: 'Terms and Conditions of Use', action: () => Linking.openURL('http://google.com')},
                 {id: 2, label: 'Log out', action: () => this.handleLogout()},
             ]
 		};
+	}
+
+	navigateTo(screen) {
+		const {navigation} = this.props;
+		navigation.navigate(screen);
 	}
 
     handleLogout() {
