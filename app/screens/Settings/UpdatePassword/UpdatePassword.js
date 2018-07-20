@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { Form, Input, Item, Label } from 'native-base';
-import { auth } from 'app/config/firebase';
+import { connect } from 'react-redux';
+import firebase, { auth } from 'app/config/firebase';
 import ScreenWrapper from 'app/components/common/ScreenWrapper/';
 import Button from 'app/components/common/Button/';
 import style from './style';
@@ -30,8 +31,49 @@ class UpdatePassword extends Component {
 		};
 	}
 
+	/**
+	 * Validate the input then send the requests to update a password
+	 * @return {Void} 
+	 */
 	handleUpdatePassword() {
-		// ..
+		const {email} = this.props.user;
+		const {current: password, new_password, new_repeated} = this.state;
+		const credential = firebase.auth.EmailAuthProvider.credential(email, password);
+		const user = auth().currentUser;
+
+		if(password.length < 6) {
+			alert('Please enter your current password.');
+			return;
+		};
+
+		if(new_password.length < 6) {
+			alert('Make sure your new password is at least 6 characters.');
+			return;
+		};
+
+		if(new_password != new_repeated) {
+			alert('The new passwords you entered do not match.');
+			return;
+		};
+
+		this.setState({isSubmitting: true});
+
+		user.reauthenticateAndRetrieveDataWithCredential(credential)
+		.then(() => {
+			user.updatePassword(new_password).then(() => {
+				alert('Your password was successfully updated.');
+				this.setState(this.getInitialState());
+			})
+			.catch(err => {
+				this.setState({isSubmitting: false});
+				console.log(err);
+			});
+		})
+		.catch(err => {
+			alert('The current password you provided is incorrect.');
+			this.setState({isSubmitting: false});
+			console.log(err);
+		});
 	}
 
 	/**
@@ -52,6 +94,7 @@ class UpdatePassword extends Component {
 							textContentType="password"
 							autoCapitalize="none"
 							autoCorrect={false}
+							secureTextEntry={true}
 							value={current}
 							onChangeText={(current) => this.setState({current})}
 						/>
@@ -61,15 +104,17 @@ class UpdatePassword extends Component {
 						<Input
 							autoCapitalize="none"
 							autoCorrect={false}
+							secureTextEntry={true}
 							value={new_password}
 							onChangeText={(new_password) => this.setState({new_password})}
 						/>
 					</Item>
 					<Item floatingLabel>
-						<Label>Repeat new password</Label>
+						<Label>Repeated new password</Label>
 						<Input
 							autoCapitalize="none"
 							autoCorrect={false}
+							secureTextEntry={true}
 							value={new_repeated}
 							onChangeText={(new_repeated) => this.setState({new_repeated})}
 						/>
@@ -85,4 +130,15 @@ class UpdatePassword extends Component {
 	}
 }
 
-export default UpdatePassword;
+export default connect(mapStateToProps, null)(UpdatePassword);
+
+/**
+ * Map the redux store's state to the component's props
+ * @param  {Object} options.user The user model
+ * @return {Object}                  
+ */
+function mapStateToProps({user}) {
+	return {
+		user,
+	};
+}
