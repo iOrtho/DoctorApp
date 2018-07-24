@@ -91,8 +91,12 @@ class SignUpStep3 extends Component {
 					phone_number,
 					date_of_birth: dob,
 					name: `${firstname} ${middlename ? middlename+' ' : ''}${lastname}`,
-					isEmailVerified: false,
 					Office: { id, name },
+					permissions: {
+						notifications: false,
+						notifications_token: '',
+					},
+					isEmailVerified: false,
 					created_at: new Date(),
 					updated_at: new Date(),
 				};
