@@ -25,9 +25,9 @@ class SettingsMenu extends Component {
 		return {
             items: [
                 {id: 5, label: 'My Tokens', action: null},
-                {id: 4, label: 'My Account Details', action: null},
+                {id: 4, label: 'My Account Details', action: () => this.navigateTo('AccountDetails')},
                 {id: 6, label: 'Update Password', action: () => this.navigateTo('UpdatePassword')},
-                {id: 3, label: 'Application Settings', action: null},
+                {id: 3, label: 'Application Settings', action: () => this.navigateTo('AppSettings')},
                 {id: 1, label: 'Terms and Conditions of Use', action: () => Linking.openURL('http://google.com')},
                 {id: 2, label: 'Log out', action: () => this.handleLogout()},
             ]
