@@ -24,7 +24,6 @@ class SettingsMenu extends Component {
 	getInitialState() {
 		return {
             items: [
-                {id: 5, label: 'My Tokens', action: null},
                 {id: 4, label: 'My Account Details', action: () => this.navigateTo('AccountDetails')},
                 {id: 6, label: 'Update Password', action: () => this.navigateTo('UpdatePassword')},
                 {id: 3, label: 'Application Settings', action: () => this.navigateTo('AppSettings')},
