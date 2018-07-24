@@ -57,12 +57,12 @@ class AccountDetails extends Component {
 		const {id} = this.props.user;
 		const Users = database.collection('Users');
 
-		if(firstname.length < 6) {
+		if(firstname.length < 2) {
 			alert('Please enter your first name.');
 			return;
 		};
 
-		if(lastname.length < 6) {
+		if(lastname.length < 2) {
 			alert('Please enter your last name.');
 			return;
 		};
@@ -132,15 +132,16 @@ class AccountDetails extends Component {
 					</Item>
 					<Item>
 						<Label>Date of birth</Label>
-						<DatePicker
-							modalTransparent={true}
-							defaultDate={new Date(dob)}
-							minimumDate={new Date(1940, 1, 1)}
-							maximumDate={new Date(2010, 1, 1)}
-							onDateChange={(dob) => this.setState({dob})}
-							placeHolderText="Select your date of birth"
-							locale="en"
-						/>
+						{dob && 
+							<DatePicker
+								modalTransparent={false}
+								defaultDate={dob}
+								minimumDate={new Date(1940, 1, 1)}
+								maximumDate={new Date(2010, 1, 1)}
+								onDateChange={(dob) => this.setState({dob})}
+								placeHolderText="Select your date of birth"
+								locale="en"
+							/>}
 					</Item>
 					<Button
 						text="Update my account"
