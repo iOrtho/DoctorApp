@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { View, Text, Switch } from 'react-native';
 import { Permissions, Notifications } from 'expo';
-import { Content, Right, Left, Icon, List, ListItem } from 'native-base';
+import { Content, Right, Left, Body, Icon, List, ListItem } from 'native-base';
 import { connect } from 'react-redux';
 import { auth, database } from 'app/config/firebase';
 import ScreenWrapper from 'app/components/common/ScreenWrapper';
+import styling from 'app/config/styling';
 import style from '../style';
 
 class AppSettings extends Component {
@@ -16,6 +17,7 @@ class AppSettings extends Component {
 		this.state = this.getInitialState();
 
 		this.askForNotifications = this.askForNotifications.bind(this);
+		this.handleNotificationChange = this.handleNotificationChange.bind(this);
 	}
 
 	/**
@@ -27,16 +29,11 @@ class AppSettings extends Component {
 		};
 	}
 
-	componentDidMount() {
-		if(! this.props.user.permissions.notifications) {
-			this.askForNotifications();
-		}
-	}
-
 	async askForNotifications() {
 		const {status} = await Permissions.askAsync(Permissions.NOTIFICATIONS);
 		
 		if(status != 'granted') {
+			console.log(status)
 			alert('Please enable notifications, they are essential for the proper functioning of the app.');
 			return;
 		}
@@ -48,6 +45,21 @@ class AppSettings extends Component {
 		Users.doc(id).update({
 			"permissions.notifications": status == 'granted',
 			"permissions.notifications_token": token,
+			updated_at: new Date(),
+		});
+	}
+
+	async handleNotificationChange(activate) {
+		if(activate) {
+			this.askForNotifications();
+			return;
+		}
+
+		const Users = database.collection('Users');
+		const {id} = this.props.user;
+		Users.doc(id).update({
+			"permissions.notifications": false,
+			updated_at: new Date()
 		});
 	}
 
@@ -63,11 +75,16 @@ class AppSettings extends Component {
 				<List>
 					<ListItem>
 						<Left>
-							<Switch value={notifications} />
+							<Switch
+								value={notifications}
+								onTintColor={styling.color.main}
+								tintColor={styling.color.main} 
+								onValueChange={this.handleNotificationChange}
+							/>
 						</Left>
-						<Right>
-							<Text>Notifications</Text>
-						</Right>
+						<Body>
+							<Text>Allow notifications.</Text>
+						</Body>
 					</ListItem>
 				</List>
 			</ScreenWrapper>
