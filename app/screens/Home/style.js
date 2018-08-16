@@ -8,4 +8,10 @@ export default StyleSheet.create({
 		marginTop: 20,
 		marginBottom: 20,
 	},
+	bioContainer: {
+		padding: 20,
+	},
+	bio: {
+		lineHeight: 24,
+	},
 });

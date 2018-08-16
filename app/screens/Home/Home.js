@@ -90,8 +90,8 @@ class Home extends Component {
 						<Text>Review container</Text>
 					</View>
 
-					<View style={{height: 200, backgroundColor: 'green'}}>
-						<Text>"Office Description/Bio"</Text>
+					<View style={[style.bioContainer]}>
+						<Text style={[style.bio]}>{office.description}</Text>
 					</View>
 
 					<Text style={[style.title]}>About the Doctor</Text>
@@ -100,8 +100,8 @@ class Home extends Component {
 						<Text>Picture of Doctor?</Text>
 					</View>
 
-					<View style={{height: 200, backgroundColor: 'lightblue'}}>
-						<Text>Bio of Doctor</Text>
+					<View style={[style.bioContainer]}>
+						<Text style={[style.bio]}>{office.doctors[0].biography}</Text>
 					</View>
 				</ScreenWrapper>
 			</ScrollView>
