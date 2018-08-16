@@ -6,6 +6,7 @@ import ScreenLoading from 'app/components/common/ScreenLoading';
 import QuickHelp from 'app/components/Home/QuickHelp';
 import OperatingHours from 'app/components/Home/OperatingHours';
 import Slide from 'app/components/Slide';
+import Permissions from 'app/lib/Permissions';
 import { connect } from 'react-redux';
 import UserAction from 'app/store/actions/user';
 import style from './style';
@@ -34,6 +35,13 @@ class Home extends Component {
 			],
 			loadQueue: []
 		};
+	}
+
+	/**
+	 * Request to activate notifications if not already done
+	 */
+	ComponentDidMount() {
+		Permissions.requestNotifications(this.props.user.id);
 	}
 
 	/**
@@ -114,11 +122,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(Home);
 /**
  * Map the redux store's state to the component's props
  * @param  {Object} options.office The office model
+ * @param  {Object} options.user The user model
  * @return {Object}                  
  */
-function mapStateToProps({office}) {
+function mapStateToProps({office, user}) {
 	return {
 		office,
+		user,
 	};
 }
 
