@@ -47,6 +47,7 @@ class Home extends Component {
 		
 		Image.prefetch(pictures[0]);
 		Image.prefetch(doctors[0].picture);
+
 		Permissions.requestNotifications(this.props.user.id);
 	}
 
