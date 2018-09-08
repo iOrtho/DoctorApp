@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import styling from 'app/config/styling';
 
 export default StyleSheet.create({
 	container: {
@@ -11,7 +12,13 @@ export default StyleSheet.create({
 	recipient: {
 		alignSelf: 'flex-start'
 	},
+	msgRecipient: {
+		// ..
+	},
 	sender: {
 		alignSelf: 'flex-end',
+	},
+	msgSender: {
+		backgroundColor: `${styling.color.main}30`,
 	},
 });
