@@ -51,11 +51,11 @@ class OperatingHours extends Component {
      */
     evaluateCurrentStatus(currentWeekday) {
         const {hours} = this.props;
-        const today = moment().year(2000).month(0).date(1);
+        const day = moment().year(2000).month(0).date(1);
         const closing = moment(hours[currentWeekday].close_date.seconds * 1000);
         const opening = moment(hours[currentWeekday].open_date.seconds * 1000);
-        const closeValue = closing.diff(today,'hours', true);
-        const openValue = today.diff(opening,'hours', true);
+        const closeValue = closing.diff(day,'hours', true);
+        const openValue = day.diff(opening,'hours', true);
         this.setState({currentWeekday});
 
         let currentStatus = '';

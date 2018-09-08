@@ -6,7 +6,7 @@ import UserAction from 'app/store/actions/user';
 import ScreenWrapper from 'app/components/common/ScreenWrapper/';
 import Button from 'app/components/common/Button/';
 import Link from 'app/components/common/Link/';
-import { auth } from 'app/config/firebase';
+import { database, auth } from 'app/config/firebase';
 import style from '../style';
 
 class Login extends Component {
@@ -57,13 +57,32 @@ class Login extends Component {
 	 * @return {Void} 
 	 */
 	handleSignIn() {
+		const Users = database.collection('Users');
 		const {email, password} = this.state;
+		const {office} = this.props; 		
+
 		this.setState({isSubmitting: true});
 
-		auth().signInWithEmailAndPassword(email, password).catch(({message}) => {
-			this.setState({isSubmitting: false});
-			alert(message);
-		});
+		Users.where('Office.id', '==', office.id).where('email', '==', email).limit(1).get()
+			.then(snapshot => {
+				let userExist;
+				snapshot.forEach(doc => userExist = Boolean(doc.id));
+
+				if(!userExist) {
+					this.setState({isSubmitting: false});
+					alert('No user with this email address could be found at this practice!');
+					return;
+				}
+
+				auth().signInWithEmailAndPassword(email, password).catch(({message}) => {
+					this.setState({isSubmitting: false});
+					alert(message);
+				});
+			})
+			.catch(err => {
+				console.error(err);
+				this.setState({isSubmitting: false});
+			});
 	}
 
 	/**
@@ -122,11 +141,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(Login);
 /**
  * Map the redux store's state to the component's props
  * @param  {Object} state.user The user's account model
+ * @param  {Object} state.office The practice's office model
  * @return {Object}                  
  */
-function mapStateToProps({user}) {
+function mapStateToProps({user, office}) {
 	return {
 		user,
+		office,
 	};
 }
 

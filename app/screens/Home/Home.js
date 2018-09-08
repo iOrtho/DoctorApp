@@ -37,14 +37,14 @@ class Home extends Component {
 	 * Request to activate notifications if not already done and load all the pics
 	 */
 	componentDidMount() {
-		const {office: {doctors, pictures}} = this.props;
+		const {user, office: {doctors, pictures}} = this.props;
 		const data = pictures.map(url => ({url}));
 		this.setState({data});
 		
 		Image.prefetch(pictures[0]);
 		Image.prefetch(doctors[0].picture);
 
-		Permissions.requestNotifications(this.props.user.id);
+		Permissions.requestNotifications(user.id);
 	}
 
 	/**

@@ -48,7 +48,7 @@ class Chat extends Component {
 		const {input: content} = this.state;
 		const {office, user: {id, name}} = this.props;
 
-		if(body.length < 3) return;
+		if(content.length < 3) return;
 
 		this.setState({input: ''});
 		database.collection('Messages').doc().set({
@@ -150,12 +150,14 @@ export default connect(mapStateToProps, mapDispatchToProps)(Chat);
 /**
  * Map the redux store's state to the component's props
  * @param  {Object} state.user The user's account info
+ * @param  {Object} state.office The practice's office info
  * @param {Object} state.chat The chat tree of the store
  * @return {Object}                  
  */
-function mapStateToProps({user, chat}) {
+function mapStateToProps({user, office, chat}) {
 	return {
 		user,
+		office,
 		chat,
 	};
 }
