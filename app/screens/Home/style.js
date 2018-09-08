@@ -8,10 +8,13 @@ export default StyleSheet.create({
 		marginTop: 20,
 		marginBottom: 20,
 	},
-	bioContainer: {
-		padding: 20,
-	},
-	bio: {
-		lineHeight: 24,
-	},
+    subtitle: {
+        fontSize: 16,
+        flex: 1,
+        fontWeight: '500',
+        marginBottom: 20,
+    },
+    paragraph: {
+        lineHeight: 25,
+    },
 });
