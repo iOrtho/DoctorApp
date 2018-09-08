@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text } from 'react-native';
+import { ScrollView, View, Text, Image } from 'react-native';
 import Swiper from 'react-native-swiper';
 import ScreenWrapper from 'app/components/common/ScreenWrapper';
 import ScreenLoading from 'app/components/common/ScreenLoading';
@@ -28,19 +28,22 @@ class Home extends Component {
 	 */
 	getInitialState() {
 		return {
-			data: [
-				{ url: 'https://i.imgur.com/MtjAPCJ.png' },
-				{ url: 'https://i.imgur.com/VHE366s.png' },
-				{ url: 'https://i.imgur.com/jHyN5vz.png' },
-			],
+			data: [],
 			loadQueue: []
 		};
 	}
 
 	/**
-	 * Request to activate notifications if not already done
+	 * Request to activate notifications if not already done and load all the pics
 	 */
-	ComponentDidMount() {
+	componentDidMount() {
+		const {office: {doctors, pictures}} = this.props;
+		const data = pictures.map(url => ({url}));
+		this.setState({data});
+		
+		Image.prefetch(pictures[0]);
+		Image.prefetch(doctors[0].picture);
+
 		Permissions.requestNotifications(this.props.user.id);
 	}
 
@@ -63,6 +66,11 @@ class Home extends Component {
 	render() {
 		const {office} = this.props;
 		const {data, loadQueue} = this.state;
+		const doctorImage = {
+			width: '100%',
+			height: 220,
+			marginBottom: 20,
+		}
 
 		if(!office.id) {
 			return <ScreenLoading />;
@@ -94,22 +102,26 @@ class Home extends Component {
 
 					{office.ready && <OperatingHours hours={office.operating_hours} />}
 
-					<View style={{height: 200, backgroundColor: 'lime'}}>
+					<View style={{height: 75, marginTop: 20, marginBottom: 20, backgroundColor: 'lime'}}>
 						<Text>Review container</Text>
 					</View>
 
-					<View style={{height: 200, backgroundColor: 'green'}}>
-						<Text>"Office Description/Bio"</Text>
+					<Text style={[style.subtitle, {marginBottom: 10}]}>Behind our practice...</Text>
+
+					<View>
+						<Text style={[style.paragraph]}>{office.description}</Text>
 					</View>
 
-					<Text style={[style.title]}>About the Doctor</Text>
+					<Text style={[style.title, {marginBottom: 10}]}>About our Doctor</Text>
 
-					<View style={{height: 200, backgroundColor: 'turquoise'}}>
-						<Text>Picture of Doctor?</Text>
+					<Text style={[style.subtitle]}>{office.doctors[0].name}</Text>
+
+					<View style={doctorImage}>
+						<Image source={{uri: office.doctors[0].picture}} style={{width: '100%', height: '100%'}} />
 					</View>
 
-					<View style={{height: 200, backgroundColor: 'lightblue'}}>
-						<Text>Bio of Doctor</Text>
+					<View style={{marginBottom: 25}}>
+						<Text style={[style.paragraph]}>{office.doctors[0].biography}</Text>
 					</View>
 				</ScreenWrapper>
 			</ScrollView>
