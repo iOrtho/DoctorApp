@@ -17,8 +17,8 @@ class Chat extends Component {
 	constructor(props) {
 		super(props);
 		this.state = this.getInitialState();
-		
 		this.chatview = React.createRef();
+		this.handleMarkMessagesAsRead = this.handleMarkMessagesAsRead.bind(this);
 		this.renderChatlogs = this.renderChatlogs.bind(this);
 		this.sendMessage = this.sendMessage.bind(this);
 	}
@@ -41,14 +41,50 @@ class Chat extends Component {
 	}
 
 	/**
+	 * Mark newly received messages as read
+	 */
+	componentDidUpdate(prevProps) {
+		const {messages: newMessages} = this.props.chat;
+		const {messages} = prevProps.chat;
+
+		if(messages.length != newMessages.length) {
+			this.handleMarkMessagesAsRead();
+		}
+	}
+
+	/**
+	 * Mark and save the read receipt on the messages received
+	 * @return {Void} 
+	 */
+	handleMarkMessagesAsRead() {
+		const Messages = database.collection('Messages');
+		const {Office} = this.props.user;
+		const batch = database.batch();
+		const messages = [];
+
+		Messages.where('Author.Office.id', '==', Office.id).get()
+			.then(data => {
+			 	data.docChanges().forEach(changes => {
+				    const {id} = changes.doc;
+				    const {read_at} = { ...changes.doc.data() };
+
+				    if(!messages.includes(id) && !read_at) messages.push(id);
+				});
+			});
+
+		messages.forEach(id => batch.update(Messages.doc(id), {read_at: new Date()}));
+		batch.commit();
+	}
+
+	/**
 	 * Create the new message collection entry
 	 * @return {Void} 
 	 */
 	sendMessage() {
 		const {input: content} = this.state;
-		const {office, user: {id, name}} = this.props;
+		const {user: {id, name, Office}} = this.props;
 
-		if(body.length < 3) return;
+		if(content.length < 3) return;
 
 		this.setState({input: ''});
 		database.collection('Messages').doc().set({
@@ -56,7 +92,7 @@ class Chat extends Component {
 				type: 'text',
 				content,
 			},
-			recipient: office.id,
+			recipient: Office.id,
 			Author: { id, name },
 			created_at: new Date(),
 		})
