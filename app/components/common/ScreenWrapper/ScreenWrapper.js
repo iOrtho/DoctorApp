@@ -7,7 +7,7 @@ import style from './style';
 const ScreenWrapper = ({style: customStyle, children}) => {
 	
 	return (
-        <KeyboardAwareScrollView>
+        <KeyboardAwareScrollView contentContainerStyle={{height: '100%'}}>
     		<View style={[style.screen, ...customStyle]}>
     			{children}
     		</View>

@@ -5,10 +5,12 @@ import style from './style';
 
 const Message = ({content: {type, content}, author, isAuthor}) => {
 
-	const msgStyle = isAuthor ? style.sender : style.recipient;
+	const msgAuthorStyle = isAuthor ? style.sender : style.recipient;
+	const msgStyle = isAuthor ? style.msgSender : style.msgRecipient;
+
 	return (
-		<View>
-			<Text style={[msgStyle]}>{author.name}</Text>
+		<View style={{marginTop: 15}}>
+			<Text style={[msgAuthorStyle]}>{author.name}</Text>
 			<View style={[style.msg, msgStyle]}>
 				{type == 'text' && <Text>{content}</Text>}
 			</View>

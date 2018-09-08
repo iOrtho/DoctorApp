@@ -7,7 +7,9 @@ export default StyleSheet.create({
 	chatView: {
 		display: 'flex',
 		flexDirection: 'column',
-		height: '100%',
+		height: 490,
+		marginBottom: 90,
+		//height: '60%',
 	},
 	sender: {
 		position: 'absolute',
@@ -16,7 +18,7 @@ export default StyleSheet.create({
 		flexDirection: 'column',
 		justifyContent: 'center',
 		alignSelf: 'center',
-		bottom: 5,
+		bottom: 0,
 	},
 	submitMessage: {
 		flex: 1,
