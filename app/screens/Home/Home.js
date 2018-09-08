@@ -41,7 +41,8 @@ class Home extends Component {
 	 * Request to activate notifications if not already done
 	 */
 	ComponentDidMount() {
-		Permissions.requestNotifications(this.props.user.id);
+		const {user} = this.props;
+		Permissions.requestNotifications(user.id);
 	}
 
 	/**
