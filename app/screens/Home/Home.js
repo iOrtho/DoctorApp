@@ -28,11 +28,7 @@ class Home extends Component {
 	 */
 	getInitialState() {
 		return {
-			data: [
-				/*{ url: 'https://i.imgur.com/MtjAPCJ.png' },
-				{ url: 'https://i.imgur.com/VHE366s.png' },
-				{ url: 'https://i.imgur.com/jHyN5vz.png' },*/
-			],
+			data: [],
 			loadQueue: []
 		};
 	}
