@@ -11,12 +11,19 @@ import { auth, database } from 'app/config/firebase';
 export default class App extends React.Component {
 
     /**
-     * Set listener on the auth status of the user to sync the store's user model
+     * Set listeners on live data
      */
     componentDidMount() {
-        const Users = database.collection('Users');
-        const {authIsChecked} = store.getState().user;
         this.loadOfficeDetails();
+        this.loadUserDetails();
+    }
+
+    /**
+     * Set a listener on the auth status of the user
+     * @return {Void} 
+     */
+    loadUserDetails() {
+        const Users = database.collection('Users');
 
         auth().onAuthStateChanged((user) => {
             if(user) {
@@ -57,7 +64,12 @@ export default class App extends React.Component {
         });
     }
 
+    /**
+     * Render the component's markup
+     * @return {ReactElement} 
+     */
     render() {
+    
         return (
             <Provider store={store}>
                 <Root>
