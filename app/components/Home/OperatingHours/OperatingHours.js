@@ -47,7 +47,7 @@ class OperatingHours extends Component {
     /**
      * Figure out the first hint to show about the operating hours
      * @param  {String} currentWeekday The current week day
-     * @return {Void}                
+     * @return {Void}                 
      */
     evaluateCurrentStatus(currentWeekday) {
         const {hours} = this.props;
@@ -78,6 +78,15 @@ class OperatingHours extends Component {
         }
 
         this.setState({currentStatus});
+    }
+
+    /**
+     * Capitalize the day of the week and return it
+     * @param {String} day The day to capitalize
+     * @return {String} newDay
+     */
+    capitalizeDay(day) {
+        return day.charAt(0).toUpperCase() + day.slice(1);
     }
 
     /**
@@ -117,7 +126,7 @@ class OperatingHours extends Component {
         return (
             <View key={i} style={[style.tableRow, style.day]}>
                 <Text style={[style.dayCell, boldText]}>
-                    {day}
+                    {this.capitalizeDay(day)}
                 </Text>
                 <Text style={[style.timeCell, boldText]}>
                     {open ? `${open} - ${close}` : 'Closed'}
