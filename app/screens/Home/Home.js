@@ -102,9 +102,9 @@ class Home extends Component {
 
 					{office.ready && <OperatingHours hours={office.operating_hours} />}
 
-					<View style={{height: 75, marginTop: 20, marginBottom: 20, backgroundColor: 'lime'}}>
+					{/*<View style={{height: 75, marginTop: 20, marginBottom: 20, backgroundColor: 'lime'}}>
 						<Text>Review container</Text>
-					</View>
+					</View>*/}
 
 					<Text style={[style.subtitle, {marginBottom: 10}]}>Behind our practice...</Text>
 
