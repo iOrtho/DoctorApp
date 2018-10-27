@@ -16,7 +16,6 @@ class Login extends Component {
 		super(props);
 
 		this.state = this.getInitialState();
-
 		this.handleSignIn = this.handleSignIn.bind(this);
 	}
 
