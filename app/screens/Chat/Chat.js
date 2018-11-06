@@ -8,9 +8,6 @@ import ChatAction from 'app/store/actions/chat';
 import { database } from 'app/config/firebase';
 import style from './style';
 
-const companyId = 'ow71aFnAQgLAbQuF9KIQ';
-const customerId = 'KHHNbjR2iooYQJpHyfSq';
-
 class Chat extends Component {
 
 	/** The component's constructor */
@@ -21,6 +18,7 @@ class Chat extends Component {
 		this.handleMarkMessagesAsRead = this.handleMarkMessagesAsRead.bind(this);
 		this.renderChatlogs = this.renderChatlogs.bind(this);
 		this.sendMessage = this.sendMessage.bind(this);
+		this.handleNotifyAgent = this.handleNotifyAgent.bind(this);
 	}
 
 	/**
@@ -99,11 +97,26 @@ class Chat extends Component {
 		})
 		.then(() => {
 			console.log('Successfully sent message!');
+			//this.handleNotifyAgent();
 		})
 		.catch((err) => {
 			console.log('Error:', err);
 		});
 	}
+
+	/*handleNotifyAgent() {
+		const {} = 
+		const data = {
+			"notification": {
+				"title": "Firebase",
+					"body": "Firebase is awesome",
+						"click_action": "http://localhost:3000/",
+							"icon": "http://url-to-an-icon/icon.png"
+			},
+			"to": "dntaKBmIr24:APA91bEgMHsBG8TLcFEbApWE8CsLlq7ZmpPc2MPc4YsT5cZyEaK2n7iBx45EiFz0olz5itbeBtVOdFCGrEdyCQTuuEDTP9EOnKwLZE1GutU6Nl9hKvi_RfaYcQpaTJZSyzt9qZ-HXVwE"
+		};
+		axios.post('https://fcm.googleapis.com/fcm/send')
+	}*/
 
 	/**
 	 * Render the chat history
