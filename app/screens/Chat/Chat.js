@@ -83,11 +83,12 @@ class Chat extends Component {
 	sendMessage() {
 		const {input: content} = this.state;
 		const {user: {id, name, Office}} = this.props;
+		const Messages = database.collection('Messages');
 
 		if(content.length < 3) return;
 
 		this.setState({input: ''});
-		database.collection('Messages').doc().set({
+		Messages.doc().set({
 			body: {
 				type: 'text',
 				content,
@@ -133,34 +134,39 @@ class Chat extends Component {
 
 		return (
 			<ScreenWrapper>
-				{(() => {
-					if(user.id && !meta.isLoading) {
-
-						return (
-							<ScrollView 
-								ref={ref => this.scrollView = ref}
-							    onContentSizeChange={(contentWidth, contentHeight)=>{        
-							        this.scrollView.scrollToEnd({animated: true});
-							    }}
-								style={style.chatView}
-							>
-							{(() => { 
-								if(messages.length == 0) {
-									return (
-										<Text style={{marginTop: 50}}>
-											No messages yet! Start a conversation today.
-										</Text>
-									);
-								}else {
-									return this.renderChatlogs();
-								}
-							})()}
-							</ScrollView>
-						);
-					}else if(meta.isLoading) {
-						return (<Spinner />);
-					}
-				})()}
+				<ScrollView
+					ref={ref => this.scrollView = ref}
+					onContentSizeChange={(contentWidth, contentHeight )=> {        
+						this.scrollView.scrollToEnd({animated: true});
+					}}
+					style={style.chatView}
+				>
+					{(() => {
+						if(user.id && !meta.isLoading) {
+							return (
+								<React.Fragment>
+								{(() => { 
+									if(messages.length == 0) {
+										return (
+											<Text style={{marginTop: '50%', height: 100, textAlign: 'center'}}>
+												No messages yet! Start a conversation today.
+											</Text>
+										);
+									}else {
+										return this.renderChatlogs();
+									}
+								})()}
+								</React.Fragment>
+							);
+						}else if(meta.isLoading) {
+							return (
+								<View style={{height: 100, marginTop: '50%'}}>
+									<Spinner color="black" />
+								</View>
+							);
+						}
+					})()}
+				</ScrollView>
 				<View style={style.sender}>
 					<Item>
 						<Input
