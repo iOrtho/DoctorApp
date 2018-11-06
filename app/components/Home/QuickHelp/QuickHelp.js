@@ -59,7 +59,7 @@ class QuickHelp extends Component {
 			cancelButtonIndex: 2,
 			title: number,
 		}, (index) => {
-			this.handleMapAction(actions[index], index == 0 ? number : null);
+			this.handleCallAction(actions[index], number);
 		});
 	}
 
@@ -78,7 +78,7 @@ class QuickHelp extends Component {
 			cancelButtonIndex: 2,
 			title: fullAddress,
 		}, (index) => {
-			this.handleMapAction(actions[index], index == 0 ? fullAddress : null);
+			this.handleMapAction(actions[index], fullAddress);
 		});
 	}
 
