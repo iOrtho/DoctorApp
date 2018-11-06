@@ -34,8 +34,8 @@ export default class App extends React.Component {
                             id: change.doc.id,
                             authIsChecked: true,
                         };
-
-                        store.dispatch(UserAction.resetUserModel());
+                        
+                        //store.dispatch(UserAction.resetUserModel());
                         store.dispatch(UserAction.setUserModel(data));
                     });
                 });

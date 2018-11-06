@@ -38,7 +38,7 @@ class AppSettings extends Component {
 		const {id} = this.props.user;
 		Users.doc(id).update({
 			"permissions.notifications": false,
-			updated_at: new Date()
+			updated_at: new Date(),
 		});
 	}
 
