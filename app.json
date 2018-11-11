@@ -1,14 +1,11 @@
 {
   "expo": {
     "name": "DoctorApp",
-    "description": "This is a beta version.",
+    "description": "This project is really great.",
     "slug": "DoctorApp",
     "privacy": "public",
     "sdkVersion": "30.0.0",
-    "platforms": [
-      "ios",
-      "android"
-    ],
+    "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,21 +21,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "myortho.myorthoapp",
-      "publishBundlePath": "ios/doctorapp/Supporting/shell-app.bundle",
-      "publishManifestPath": "ios/doctorapp/Supporting/shell-app-manifest.json"
-    },
-    "isDetached": true,
-    "detach": {
-      "iosExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/ios-v2.8.4-sdk30.0.0-3de13133-1adc-4ba1-8569-a84011e570b4.tar.gz",
-      "androidExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/android-v2.8.1-sdk30.0.0-271c32ab-0715-4dfb-8270-ecead3679bb4.tar.gz"
-    },
-    "scheme": "expf5cb3d6dbc364e779ca180a2f0a65a15",
-    "android": {
-      "package": "myortho.myorthoapp",
-      "publishBundlePath": "android/app/src/main/assets/shell-app.bundle",
-      "publishManifestPath": "android/app/src/main/assets/shell-app-manifest.json"
+      "supportsTablet": true
     }
   }
 }
