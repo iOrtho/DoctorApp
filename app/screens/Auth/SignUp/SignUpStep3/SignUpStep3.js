@@ -7,6 +7,7 @@ import moment from 'moment';
 import firebase, { database } from 'app/config/firebase';
 import ScreenWrapper from 'app/components/common/ScreenWrapper/';
 import Button from 'app/components/common/Button/';
+import PatientSchema from 'app/schemas/Patient';
 import style from '../../style';
 
 class SignUpStep3 extends Component {
@@ -30,7 +31,6 @@ class SignUpStep3 extends Component {
 			firstname: '',
 			middlename: '',
 			lastname: '',
-			photo: '',
 			dob: null,
 			isSubmitting: false,
 			error: '',
@@ -68,7 +68,7 @@ class SignUpStep3 extends Component {
 	 */
 	handleCreateUserAccount() {
 		const Users = database.collection('Users');
-		const {firstname, middlename, lastname, photo, dob} = this.state;
+		const {firstname, middlename, lastname, dob} = this.state;
 		const {email, password, phone_number} = this.props.user;
 		const {id, name} = this.props.office;
 
@@ -81,25 +81,17 @@ class SignUpStep3 extends Component {
 		firebase.auth().onAuthStateChanged((user) => {
 			if(user) {
 				const {uid: auth_id} = user;
-				const data = {
+				const data = PatientSchema({
 					auth_id,
 					email,
 					firstname,
 					middlename,
 					lastname,
-					photo,
 					phone_number,
 					date_of_birth: dob,
 					name: `${firstname} ${middlename ? middlename+' ' : ''}${lastname}`,
-					Office: { id, name },
-					permissions: {
-						notifications: false,
-						notifications_token: '',
-					},
-					isEmailVerified: false,
-					created_at: new Date(),
-					updated_at: new Date(),
-				};
+					practice: { id, name },
+				});
 
 				Users.add(data).then((doc) => {
 					this.props.setUserModel({id: doc.id, ...data});

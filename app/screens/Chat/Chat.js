@@ -6,6 +6,7 @@ import Message from 'app/components/Chat/Message/';
 import { connect } from 'react-redux';
 import ChatAction from 'app/store/actions/chat';
 import { database } from 'app/config/firebase';
+import MessageSchema from 'app/schemas/Message';
 import style from './style';
 
 class Chat extends Component {
@@ -85,16 +86,14 @@ class Chat extends Component {
 
 		if(content.length < 3) return;
 
-		this.setState({input: ''});
-		Messages.doc().set({
-			body: {
-				type: 'text',
-				content,
-			},
+		const data = MessageSchema({
 			recipient: Office.id,
-			Author: { id, name },
-			created_at: new Date(),
-		})
+			body: { type: 'text', content },
+			author: { id, name },
+		});
+
+		this.setState({input: ''});
+		Messages.doc(data).set()
 		.then(() => {
 			console.log('Successfully sent message!');
 			//this.handleNotifyAgent();
