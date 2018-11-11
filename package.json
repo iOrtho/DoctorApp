@@ -1,5 +1,5 @@
 {
-  "name": "empty-project-template",
+  "name": "DoctorApp",
   "main": "node_modules/expo/AppEntry.js",
   "private": true,
   "scripts": {
@@ -19,7 +19,7 @@
     "native-base": "^2.8.0",
     "prop-types": "^15.6.2",
     "react": "16.3.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
+    "react-native": "0.55.4",
     "react-native-communications": "^2.2.1",
     "react-native-firebase": "^5.1.0",
     "react-native-swiper": "^1.5.13",

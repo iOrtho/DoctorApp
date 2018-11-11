@@ -18,7 +18,7 @@ const Patient = {
         notifications: false,
         notifications_token: '',
     },
-    isEmailVerified: false,
+    is_email_verified: false,
 };
 
 export default function create(data) {

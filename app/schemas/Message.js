@@ -6,7 +6,7 @@ const Message = {
         content: '',
     },
     recipient: '',
-    Author: { 
+    author: { 
         id: '', 
         name: '',
     },
